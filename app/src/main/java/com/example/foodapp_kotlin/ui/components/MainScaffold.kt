@@ -5,12 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 
-
 @Composable
-fun MainScaffold(content: @Composable (PaddingValues) -> Unit) {
+fun MainScaffold(navController: androidx.navigation.NavController, content: @Composable (PaddingValues) -> Unit) {
     Scaffold(
-        topBar = { TopBar() },
-        bottomBar = { BottomBar() },
+        topBar = { TopBar(navController) },
+        bottomBar = { BottomBar(navController) },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         content(innerPadding)
