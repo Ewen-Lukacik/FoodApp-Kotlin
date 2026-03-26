@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.foodapp_kotlin.ui.theme.FoodAppKotlinTheme
-import HomePage
+import HomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FoodAppKotlinTheme {
-                HomePage()
+                HomeScreen()
             }
         }
     }
