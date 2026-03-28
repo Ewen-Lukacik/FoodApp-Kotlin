@@ -44,18 +44,18 @@ app/src/main/java/com/example/foodapp_kotlin/
     │   ├── RecipeCard.kt         # carte recette
     │   └── CategoryCard.kt       # carte catégorie
     ├── screens/
-    │   ├── SplashScreen.kt
-    │   ├── LoginScreen.kt
-    │   ├── RegisterScreen.kt
-    │   ├── HomeScreen.kt
-    │   ├── SearchScreen.kt
-    │   ├── DishScreen.kt         # détail d'un plat
-    │   ├── FavoritesScreen.kt
-    │   ├── ProfileScreen.kt
-    │   ├── EditProfileScreen.kt
-    │   ├── ContactScreen.kt
-    │   ├── AllRecipesScreen.kt
-    │   └── CategoryDetailScreen.kt
+    │   ├── SplashScreen.kt           # écran de lancement avec logo, redirige vers login
+    │   ├── LoginScreen.kt            # connexion avec email/mot de passe
+    │   ├── RegisterScreen.kt         # création de compte
+    │   ├── HomeScreen.kt             # accueil avec recettes en vedette et sections par catégorie
+    │   ├── SearchScreen.kt           # barre de recherche + liste des catégories
+    │   ├── DishScreen.kt             # détail complet d'un plat (description, ingrédients, prix)
+    │   ├── FavoritesScreen.kt        # grille des recettes sauvegardées
+    │   ├── ProfileScreen.kt          # profil utilisateur avec stats et menu
+    │   ├── EditProfileScreen.kt      # formulaire pour modifier les infos du profil
+    │   ├── ContactScreen.kt          # formulaire de contact
+    │   ├── AllRecipesScreen.kt       # toutes les recettes d'une catégorie
+    │   └── CategoryDetailScreen.kt   # détail d'une catégorie avec filtres
     └── theme/
         ├── Theme.kt
         ├── Color.kt
