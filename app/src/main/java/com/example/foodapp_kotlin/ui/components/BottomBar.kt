@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun BottomBar(){
+fun BottomBar(navController: androidx.navigation.NavController){
     Row(
         modifier = Modifier.fillMaxWidth()
             .background(Color.White)
@@ -34,16 +34,19 @@ fun BottomBar(){
             .padding(vertical = 8.dp)
     ) {
         val buttons = listOf(
-            Triple(Icons.Default.Home, "Home", "HomePage"),
-            Triple(Icons.Default.Search, "Search", "SearchPage"),
-            Triple(Icons.Default.Favorite, "Favorites", "FavoritesPage"),
-            Triple(Icons.Default.Person, "Profile", "ProfilePage"),
+            Triple(Icons.Rounded.Home, "Home", "Home"),
+            Triple(Icons.Rounded.Search, "Search", "Search"),
+            Triple(Icons.Rounded.Favorite, "Favorites", "Favorites"),
+            Triple(Icons.Rounded.Person, "Profile", "Profile"),
 
             )
 
-        buttons.forEach { (icon, label, description) ->
+        buttons.forEach { (icon, label, route) ->
             Button(
-                onClick = {},
+                onClick = { navController.navigate(route) {
+                    launchSingleTop = true
+                    popUpTo(navController.graph.startDestinationId)
+                }},
                 modifier = Modifier.weight(1f)
                     .padding(horizontal = 4.dp),
                 shape = RectangleShape,
@@ -63,7 +66,7 @@ fun BottomBar(){
                 ) {
                     Icon(
                         imageVector = icon,
-                        contentDescription = description
+                        contentDescription = label
                     )
                     Text(
                         text = label,

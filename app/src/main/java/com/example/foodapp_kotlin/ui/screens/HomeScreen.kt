@@ -10,8 +10,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomePage() {
-    MainScaffold { innerPadding ->
+fun HomeScreen(navController: androidx.navigation.NavController) {
+    MainScaffold(navController = navController) { innerPadding ->
         LazyColumn(
             modifier = Modifier.padding(innerPadding).padding(horizontal = 16.dp)
         ) {
