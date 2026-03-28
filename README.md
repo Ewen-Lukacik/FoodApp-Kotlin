@@ -1,65 +1,68 @@
 # FoodApp Kotlin
 
-A modern Android recipe app built with **Jetpack Compose** and **Material Design 3**.
+Une application Android moderne de recettes construite avec **Jetpack Compose** et **Material Design 3**.
 
-## Features
+## Fonctionnalités
 
-- Browse recipe cards with name, description, duration, difficulty, and price
-- Category sections to group recipes (e.g. "Italian Classics")
-- Bottom navigation bar with 4 tabs: Home, Search, Favorites, Profile
-- Top bar branding "Tasty Recipes"
-- Light / Dark theme support (Material You dynamic colors on Android 12+)
-- Edge-to-edge display
+- Parcourir des fiches recettes avec nom, description, durée, difficulté et prix en euros
+- Sections par catégories pour regrouper les recettes (ex. "Classiques Italiens")
+- Barre de navigation inférieure avec 4 onglets : Accueil, Recherche, Favoris, Profil
+- Page de recherche avec barre de recherche et listing de catégories
+- Page détail d'un plat avec description, ingrédients et ajout aux favoris
+- Page favoris avec grille de recettes sauvegardées
+- Page profil avec statistiques et menu utilisateur
+- Affichage bord à bord (edge-to-edge)
 
-> **Note:** Search, Favorites, and Profile screens are currently empty placeholders.
+## Stack technique
 
-## Tech Stack
+| Couche       | Technologie                              |
+|--------------|------------------------------------------|
+| Langage      | Kotlin 2.0.21                            |
+| Interface    | Jetpack Compose + Material 3             |
+| Architecture | Single Activity + écrans Composable      |
+| Build        | Gradle 8 (KTS) + Version Catalog         |
+| SDK minimum  | 24 (Android 7.0)                         |
+| SDK cible    | 36 (Android 15)                          |
 
-| Layer | Technology |
-|---|---|
-| Language | Kotlin 2.0.21 |
-| UI | Jetpack Compose + Material 3 |
-| Architecture | Single Activity + Composable screens |
-| Build | Gradle 8 (KTS) + Version Catalog |
-| Min SDK | 24 (Android 7.0) |
-| Compile SDK | 36 (Android 15) |
-
-## Project Structure
+## Structure du projet
 
 ```
 app/src/main/java/com/example/foodapp_kotlin/
-├── MainActivity.kt              # Entry point
+├── MainActivity.kt                  # Point d'entrée + navigation
 └── ui/
     ├── components/
-    │   ├── MainScaffold.kt      # Layout wrapper (TopBar + BottomBar + content)
-    │   ├── TopBar.kt            # Orange header bar
-    │   ├── BottomBar.kt         # Bottom navigation (Home, Search, Favorites, Profile)
-    │   ├── FoodSection.kt       # Category section with "Find more" link
-    │   └── RecipeCard.kt        # Recipe card (image, title, duration, difficulty, price)
+    │   ├── MainScaffold.kt          # Conteneur principal (TopBar + BottomBar + contenu)
+    │   ├── TopBar.kt                # Barre supérieure
+    │   ├── BottomBar.kt             # Navigation inférieure (Accueil, Recherche, Favoris, Profil)
+    │   ├── FoodSection.kt           # Section catégorie avec lien "Voir tout"
+    │   ├── RecipeCard.kt            # Fiche recette (image, titre, durée, difficulté, prix)
+    │   └── CategoryCard.kt          # Fiche catégorie (image, nom, nombre de recettes)
     ├── screens/
-    │   ├── HomePage.kt          # Main screen with scrollable food sections
-    │   ├── SearchPage.kt        # Placeholder
-    │   ├── FavoritesPage.kt     # Placeholder
-    │   └── ProfilePage.kt       # Placeholder
+    │   ├── HomeScreen.kt            # Écran principal avec sections de recettes
+    │   ├── SearchScreen.kt          # Recherche + listing catégories
+    │   ├── DishScreen.kt            # Détail d'un plat
+    │   ├── FavoritesScreen.kt       # Recettes sauvegardées
+    │   └── ProfileScreen.kt         # Profil utilisateur
     └── theme/
         ├── Theme.kt
         ├── Color.kt
         └── Type.kt
 ```
 
-## Getting Started
+## Démarrage
 
-1. Clone the repository
+1. Cloner le dépôt
    ```bash
    git clone https://github.com/Ewen-Lukacik/FoodApp-Kotlin.git
    ```
-2. Open the project in **Android Studio Hedgehog** or later
-3. Sync Gradle and run on an emulator or physical device (API 24+)
+2. Ouvrir le projet dans **Android Studio Hedgehog** ou une version plus récente
+3. Synchroniser Gradle et lancer sur un émulateur ou appareil physique (API 24+)
 
-## Dependencies
+## Dépendances
 
 - `androidx.core:core-ktx`
 - `androidx.lifecycle:lifecycle-runtime-ktx`
 - `androidx.activity:activity-compose`
 - `androidx.compose:compose-bom:2024.09.00`
 - `androidx.compose.material3`
+- `androidx.navigation:navigation-compose`

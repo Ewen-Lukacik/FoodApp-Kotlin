@@ -1,12 +1,37 @@
-package com.example.foodapp_kotlin
+package com.example.foodapp_kotlin.ui.screens
 
-import MainScaffold
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
+import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.foodapp_kotlin.R
+import com.example.foodapp_kotlin.ui.components.MainScaffold
+import com.example.foodapp_kotlin.ui.theme.Background
+import com.example.foodapp_kotlin.ui.theme.PrimaryLight
+import com.example.foodapp_kotlin.ui.theme.Primary
+import com.example.foodapp_kotlin.ui.theme.TextPrimary
+import com.example.foodapp_kotlin.ui.theme.TextSecondary
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -14,13 +39,122 @@ fun ProfileScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp)
+                .background(Background)
                 .fillMaxSize()
         ) {
-            Text(
-                text = "Profile Screen",
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(Primary, Primary.copy(alpha = 0.7f))
+                        )
+                    )
+                    .padding(vertical = 32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = "Profile picture",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(88.dp)
+                            .clip(CircleShape)
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        "Imene Bentifraouine",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = Color.White
+                    )
+                    Text(
+                        "imene@exemple.fr",
+                        fontSize = 13.sp,
+                        color = Color.White.copy(alpha = 0.8f)
+                    )
+                }
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .offset(y = (-24).dp)
+            ) {
+                StatCard("12", "Favoris", modifier = Modifier.weight(1f))
+                StatCard("34", "Recettes testées", modifier = Modifier.weight(1f))
+                StatCard("5", "Catégories", modifier = Modifier.weight(1f))
+            }
+
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .offset(y = (-16).dp)
+            ) {
+                Card(
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(2.dp)
+                ) {
+                    Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                        ProfileMenuItem(Icons.Rounded.Person, "Modifier le profil") { navController.navigate("edit_profile") }
+                        HorizontalDivider(color = Background, thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                        ProfileMenuItem(Icons.Rounded.Favorite, "Mes favoris") { navController.navigate("favorites") }
+                        HorizontalDivider(color = Background, thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
+                        ProfileMenuItem(Icons.Rounded.Email, "Nous contacter") { navController.navigate("contact") }
+                    }
+                }
+            }
         }
+    }
+}
+
+@Composable
+private fun StatCard(value: String, label: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(value, fontWeight = FontWeight.Bold, fontSize = 22.sp, color = Primary)
+            Text(label, fontSize = 11.sp, color = TextSecondary)
+        }
+    }
+}
+
+@Composable
+private fun ProfileMenuItem(icon: ImageVector, label: String, onClick: () -> Unit = {}) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp, vertical = 14.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(38.dp)
+                .background(PrimaryLight, shape = CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(imageVector = icon, contentDescription = label, tint = Primary, modifier = Modifier.size(20.dp))
+        }
+        Spacer(modifier = Modifier.width(14.dp))
+        Text(label, fontSize = 15.sp, color = TextPrimary, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
+        Icon(
+            imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+            contentDescription = null,
+            tint = TextSecondary,
+            modifier = Modifier.size(18.dp)
+        )
     }
 }
