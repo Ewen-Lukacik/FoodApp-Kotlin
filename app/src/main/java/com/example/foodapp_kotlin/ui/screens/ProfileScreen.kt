@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
+import androidx.compose.material.icons.automirrored.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Person
@@ -104,6 +105,47 @@ fun ProfileScreen(navController: NavController) {
                         ProfileMenuItem(Icons.Rounded.Favorite, "Mes favoris") { navController.navigate("favorites") }
                         HorizontalDivider(color = Background, thickness = 1.dp, modifier = Modifier.padding(horizontal = 16.dp))
                         ProfileMenuItem(Icons.Rounded.Email, "Nous contacter") { navController.navigate("contact") }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Card(
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(2.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                navController.navigate("login") {
+                                    popUpTo(0) { inclusive = true }
+                                }
+                            }
+                            .padding(horizontal = 16.dp, vertical = 14.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(38.dp)
+                                .background(Color(0xFFFFEEEE), shape = CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.ExitToApp,
+                                contentDescription = "Se déconnecter",
+                                tint = Color(0xFFE8173A),
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(14.dp))
+                        Text(
+                            "Se déconnecter",
+                            fontSize = 15.sp,
+                            color = Color(0xFFE8173A),
+                            fontWeight = FontWeight.Medium
+                        )
                     }
                 }
             }

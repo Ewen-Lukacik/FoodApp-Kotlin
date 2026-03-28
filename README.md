@@ -1,68 +1,87 @@
 # FoodApp Kotlin
 
-Une application Android moderne de recettes construite avec **Jetpack Compose** et **Material Design 3**.
+Projet Android réalisé dans le cadre d'un cours, par un groupe de 3 :
+**Imene Bentifraouine, Lyam Matic, Ewen Lukacik**
 
-## Fonctionnalités
+L'idée c'était de faire une appli de recettes de cuisine, avec une interface propre en Jetpack Compose. On a essayé de rendre ça le plus complet possible côté UI même si la partie données est encore statique pour l'instant.
 
-- Parcourir des fiches recettes avec nom, description, durée, difficulté et prix en euros
-- Sections par catégories pour regrouper les recettes (ex. "Classiques Italiens")
-- Barre de navigation inférieure avec 4 onglets : Accueil, Recherche, Favoris, Profil
-- Page de recherche avec barre de recherche et listing de catégories
-- Page détail d'un plat avec description, ingrédients et ajout aux favoris
-- Page favoris avec grille de recettes sauvegardées
-- Page profil avec statistiques et menu utilisateur
-- Affichage bord à bord (edge-to-edge)
+---
 
-## Stack technique
+## Ce que fait l'appli
 
-| Couche       | Technologie                              |
-|--------------|------------------------------------------|
-| Langage      | Kotlin 2.0.21                            |
-| Interface    | Jetpack Compose + Material 3             |
-| Architecture | Single Activity + écrans Composable      |
-| Build        | Gradle 8 (KTS) + Version Catalog         |
-| SDK minimum  | 24 (Android 7.0)                         |
-| SDK cible    | 36 (Android 15)                          |
+- Un écran d'accueil avec des recettes organisées par catégorie
+- Une recherche avec listing de catégories
+- Une page détail pour chaque plat (description, ingrédients, infos)
+- Une page favoris
+- Un profil utilisateur avec stats et menu (modifier profil, favoris, contact, déconnexion)
+- Navigation avec une barre en bas (Accueil, Recherche, Favoris, Profil)
+- Écrans de connexion et inscription
 
-## Structure du projet
+---
+
+## Stack
+
+- **Kotlin** avec **Jetpack Compose** pour toute l'UI
+- **Material Design 3**
+- **Navigation Compose** pour les routes
+- Une seule Activity, tout le reste c'est des écrans Composable
+- Gradle 8 (KTS) + Version Catalog
+- SDK min 24, cible 36
+
+---
+
+## Structure
 
 ```
 app/src/main/java/com/example/foodapp_kotlin/
-├── MainActivity.kt                  # Point d'entrée + navigation
+├── MainActivity.kt               # point d'entrée + nav
 └── ui/
     ├── components/
-    │   ├── MainScaffold.kt          # Conteneur principal (TopBar + BottomBar + contenu)
-    │   ├── TopBar.kt                # Barre supérieure
-    │   ├── BottomBar.kt             # Navigation inférieure (Accueil, Recherche, Favoris, Profil)
-    │   ├── FoodSection.kt           # Section catégorie avec lien "Voir tout"
-    │   ├── RecipeCard.kt            # Fiche recette (image, titre, durée, difficulté, prix)
-    │   └── CategoryCard.kt          # Fiche catégorie (image, nom, nombre de recettes)
+    │   ├── MainScaffold.kt       # wrapper avec topbar + bottombar
+    │   ├── TopBar.kt
+    │   ├── BottomBar.kt
+    │   ├── FoodSection.kt        # section avec titre + "voir tout"
+    │   ├── RecipeCard.kt         # carte recette
+    │   └── CategoryCard.kt       # carte catégorie
     ├── screens/
-    │   ├── HomeScreen.kt            # Écran principal avec sections de recettes
-    │   ├── SearchScreen.kt          # Recherche + listing catégories
-    │   ├── DishScreen.kt            # Détail d'un plat
-    │   ├── FavoritesScreen.kt       # Recettes sauvegardées
-    │   └── ProfileScreen.kt         # Profil utilisateur
+    │   ├── SplashScreen.kt
+    │   ├── LoginScreen.kt
+    │   ├── RegisterScreen.kt
+    │   ├── HomeScreen.kt
+    │   ├── SearchScreen.kt
+    │   ├── DishScreen.kt         # détail d'un plat
+    │   ├── FavoritesScreen.kt
+    │   ├── ProfileScreen.kt
+    │   ├── EditProfileScreen.kt
+    │   ├── ContactScreen.kt
+    │   ├── AllRecipesScreen.kt
+    │   └── CategoryDetailScreen.kt
     └── theme/
         ├── Theme.kt
         ├── Color.kt
         └── Type.kt
 ```
 
-## Démarrage
+---
 
-1. Cloner le dépôt
+## Lancer le projet
+
+1. Cloner le repo
    ```bash
    git clone https://github.com/Ewen-Lukacik/FoodApp-Kotlin.git
    ```
-2. Ouvrir le projet dans **Android Studio Hedgehog** ou une version plus récente
-3. Synchroniser Gradle et lancer sur un émulateur ou appareil physique (API 24+)
+2. Ouvrir dans **Android Studio** (Hedgehog ou plus récent)
+3. Sync Gradle puis lancer sur un émulateur ou un vrai téléphone (API 24+)
 
-## Dépendances
+---
 
-- `androidx.core:core-ktx`
-- `androidx.lifecycle:lifecycle-runtime-ktx`
-- `androidx.activity:activity-compose`
-- `androidx.compose:compose-bom:2024.09.00`
-- `androidx.compose.material3`
-- `androidx.navigation:navigation-compose`
+## Ce qui reste à faire
+
+- Connecter une vraie base de données (Room ou Firebase)
+- Rendre les favoris persistants
+- Implémenter la recherche pour de vrai
+- Peut-être ajouter un système d'auth réel
+
+---
+
+*Projet scolaire — Imene Bentifraouine, Lyam Matic, Ewen Lukacik*
