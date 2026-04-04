@@ -17,7 +17,7 @@ import com.example.foodapp_kotlin.local.entity.*
         User::class,
         UserFavorite::class
     ],
-    version = 3
+    version = 4
 )
 abstract class AppDatabase : RoomDatabase() {
 

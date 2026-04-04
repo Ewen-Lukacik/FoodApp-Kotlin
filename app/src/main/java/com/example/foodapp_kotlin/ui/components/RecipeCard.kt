@@ -107,7 +107,7 @@ fun RecipeCard(
                         modifier = Modifier.size(12.dp)
                     )
                     Spacer(modifier = Modifier.width(2.dp))
-                    Text("4,8", fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
+                    Text(recipe.note.toString().replace('.', ','), fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
                 }
             }
 

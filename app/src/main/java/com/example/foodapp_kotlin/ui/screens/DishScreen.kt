@@ -176,7 +176,7 @@ fun DishScreen(navController: NavController, recipeId: Int, authViewModel: AuthV
                                 color = GreenAccent
                             )
                             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                InfoChip(Icons.Rounded.Star, "4,8", YellowStar)
+                                InfoChip(Icons.Rounded.Star, recipe!!.note.toString().replace('.', ','), YellowStar)
                                 InfoChip(Icons.Rounded.DateRange, "${recipe!!.time} min", TextSecondary)
                                 InfoChip(Icons.Rounded.ShoppingCart, difficultyLabel, TextSecondary)
                             }

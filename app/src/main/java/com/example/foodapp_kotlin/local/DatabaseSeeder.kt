@@ -60,42 +60,42 @@ object DatabaseSeeder {
         // 3. Insert Recipes
         val recipes = listOf(
             // Italien (id 1–6)
-            Recipe(id = 1,  name = "Pâtes Carbonara",         description = "Les vraies carbonara italiennes",        time = 25, difficulty = 2, image = "recipe_1",  price = 12),
-            Recipe(id = 2,  name = "Risotto aux champignons", description = "Risotto crémeux aux champignons",        time = 35, difficulty = 3, image = "recipe_2",  price = 13),
-            Recipe(id = 3,  name = "Lasagnes",                description = "Lasagnes à la bolognaise maison",        time = 60, difficulty = 3, image = "recipe_3",  price = 15),
-            Recipe(id = 4,  name = "Penne all'Arrabbiata",    description = "Pâtes épicées à la sauce tomate",       time = 20, difficulty = 1, image = "recipe_4",  price = 10),
-            Recipe(id = 5,  name = "Gnocchis au pesto",       description = "Gnocchis maison au pesto basilic",      time = 40, difficulty = 3, image = "recipe_5",  price = 14),
-            Recipe(id = 6,  name = "Tagliatelles au saumon",  description = "Tagliatelles crème et saumon fumé",     time = 20, difficulty = 2, image = "recipe_6",  price = 16),
+            Recipe(id = 1,  name = "Pâtes Carbonara",         description = "Les vraies carbonara italiennes",        time = 25, difficulty = 2, image = "recipe_1",  price = 12, note = 4.8),
+            Recipe(id = 2,  name = "Risotto aux champignons", description = "Risotto crémeux aux champignons",        time = 35, difficulty = 3, image = "recipe_2",  price = 13, note = 4.6),
+            Recipe(id = 3,  name = "Lasagnes",                description = "Lasagnes à la bolognaise maison",        time = 60, difficulty = 3, image = "recipe_3",  price = 15, note = 4.9),
+            Recipe(id = 4,  name = "Penne all'Arrabbiata",    description = "Pâtes épicées à la sauce tomate",       time = 20, difficulty = 1, image = "recipe_4",  price = 10, note = 4.3),
+            Recipe(id = 5,  name = "Gnocchis au pesto",       description = "Gnocchis maison au pesto basilic",      time = 40, difficulty = 3, image = "recipe_5",  price = 14, note = 4.7),
+            Recipe(id = 6,  name = "Tagliatelles au saumon",  description = "Tagliatelles crème et saumon fumé",     time = 20, difficulty = 2, image = "recipe_6",  price = 16, note = 4.5),
 
             // Pizza (id 7–12)
-            Recipe(id = 7,  name = "Pizza Margherita",        description = "La reine des pizzas",                   time = 20, difficulty = 1, image = "recipe_7",  price = 10),
-            Recipe(id = 8,  name = "Pizza Quatre Fromages",   description = "Pizza généreuse aux 4 fromages",        time = 25, difficulty = 2, image = "recipe_8",  price = 13),
-            Recipe(id = 9,  name = "Pizza Jambon-Champignons",description = "Classique indémodable",                 time = 25, difficulty = 1, image = "recipe_9",  price = 11),
-            Recipe(id = 10, name = "Pizza Pesto-Poulet",      description = "Pizza au pesto et poulet grillé",       time = 30, difficulty = 2, image = "recipe_10", price = 13),
-            Recipe(id = 11, name = "Pizza Végétarienne",      description = "Légumes grillés et mozzarella",         time = 25, difficulty = 1, image = "recipe_11", price = 11),
-            Recipe(id = 12, name = "Calzone",                 description = "Pizza pliée farcie au jambon",          time = 30, difficulty = 3, image = "recipe_12", price = 12),
+            Recipe(id = 7,  name = "Pizza Margherita",        description = "La reine des pizzas",                   time = 20, difficulty = 1, image = "recipe_7",  price = 10, note = 4.4),
+            Recipe(id = 8,  name = "Pizza Quatre Fromages",   description = "Pizza généreuse aux 4 fromages",        time = 25, difficulty = 2, image = "recipe_8",  price = 13, note = 4.8),
+            Recipe(id = 9,  name = "Pizza Jambon-Champignons",description = "Classique indémodable",                 time = 25, difficulty = 1, image = "recipe_9",  price = 11, note = 4.2),
+            Recipe(id = 10, name = "Pizza Pesto-Poulet",      description = "Pizza au pesto et poulet grillé",       time = 30, difficulty = 2, image = "recipe_10", price = 13, note = 4.6),
+            Recipe(id = 11, name = "Pizza Végétarienne",      description = "Légumes grillés et mozzarella",         time = 25, difficulty = 1, image = "recipe_11", price = 11, note = 4.1),
+            Recipe(id = 12, name = "Calzone",                 description = "Pizza pliée farcie au jambon",          time = 30, difficulty = 3, image = "recipe_12", price = 12, note = 4.7),
 
             // Burger (id 13–17)
-            Recipe(id = 13, name = "Cheeseburger",            description = "Burger classique avec beaucoup de fromage", time = 15, difficulty = 2, image = "recipe_13", price = 14),
-            Recipe(id = 14, name = "Bacon Burger",            description = "Burger avec bacon croustillant",        time = 15, difficulty = 2, image = "recipe_14", price = 15),
-            Recipe(id = 15, name = "Chicken Burger",          description = "Burger au poulet croustillant",         time = 20, difficulty = 2, image = "recipe_15", price = 13),
-            Recipe(id = 16, name = "Burger Végétarien",       description = "Steak de légumes et avocat",            time = 20, difficulty = 2, image = "recipe_16", price = 12),
-            Recipe(id = 17, name = "Double Smash Burger",     description = "Double steak smashé façon fast-food",   time = 20, difficulty = 3, image = "recipe_17", price = 17),
+            Recipe(id = 13, name = "Cheeseburger",            description = "Burger classique avec beaucoup de fromage", time = 15, difficulty = 2, image = "recipe_13", price = 14, note = 4.5),
+            Recipe(id = 14, name = "Bacon Burger",            description = "Burger avec bacon croustillant",        time = 15, difficulty = 2, image = "recipe_14", price = 15, note = 4.8),
+            Recipe(id = 15, name = "Chicken Burger",          description = "Burger au poulet croustillant",         time = 20, difficulty = 2, image = "recipe_15", price = 13, note = 4.3),
+            Recipe(id = 16, name = "Burger Végétarien",       description = "Steak de légumes et avocat",            time = 20, difficulty = 2, image = "recipe_16", price = 12, note = 4.0),
+            Recipe(id = 17, name = "Double Smash Burger",     description = "Double steak smashé façon fast-food",   time = 20, difficulty = 3, image = "recipe_17", price = 17, note = 4.9),
 
             // Salade (id 18–22)
-            Recipe(id = 18, name = "Salade César",            description = "La célèbre salade au poulet",           time = 15, difficulty = 1, image = "recipe_18", price = 11),
-            Recipe(id = 19, name = "Salade Niçoise",          description = "Thon, tomates, oeufs et olives",        time = 15, difficulty = 1, image = "recipe_19", price = 10),
-            Recipe(id = 20, name = "Salade de Crevettes",     description = "Crevettes, avocat et agrumes",          time = 10, difficulty = 1, image = "recipe_20", price = 13),
-            Recipe(id = 21, name = "Salade Grecque",          description = "Concombre, tomate, feta et olives",     time = 10, difficulty = 1, image = "recipe_21", price = 9),
-            Recipe(id = 22, name = "Bowl Quinoa-Avocat",      description = "Bowl healthy au quinoa et avocat",      time = 15, difficulty = 1, image = "recipe_22", price = 12),
+            Recipe(id = 18, name = "Salade César",            description = "La célèbre salade au poulet",           time = 15, difficulty = 1, image = "recipe_18", price = 11, note = 4.6),
+            Recipe(id = 19, name = "Salade Niçoise",          description = "Thon, tomates, oeufs et olives",        time = 15, difficulty = 1, image = "recipe_19", price = 10, note = 4.4),
+            Recipe(id = 20, name = "Salade de Crevettes",     description = "Crevettes, avocat et agrumes",          time = 10, difficulty = 1, image = "recipe_20", price = 13, note = 4.7),
+            Recipe(id = 21, name = "Salade Grecque",          description = "Concombre, tomate, feta et olives",     time = 10, difficulty = 1, image = "recipe_21", price = 9, note = 4.2),
+            Recipe(id = 22, name = "Bowl Quinoa-Avocat",      description = "Bowl healthy au quinoa et avocat",      time = 15, difficulty = 1, image = "recipe_22", price = 12, note = 4.8),
 
             // Dessert (id 23–28)
-            Recipe(id = 23, name = "Tiramisu",                description = "Le dessert italien incontournable",     time = 30, difficulty = 2, image = "recipe_23", price = 8),
-            Recipe(id = 24, name = "Fondant au chocolat",     description = "Cœur coulant au chocolat noir",        time = 20, difficulty = 2, image = "recipe_24", price = 7),
-            Recipe(id = 25, name = "Tarte aux fraises",       description = "Tarte fraîche et légère",               time = 45, difficulty = 3, image = "recipe_25", price = 9),
-            Recipe(id = 26, name = "Crème brûlée",            description = "Crème vanille et caramel croustillant", time = 40, difficulty = 3, image = "recipe_26", price = 8),
-            Recipe(id = 27, name = "Mousse au chocolat",      description = "Mousse aérienne au chocolat noir",      time = 20, difficulty = 2, image = "recipe_27", price = 6),
-            Recipe(id = 28, name = "Panna Cotta",             description = "Panna cotta vanille et coulis fraise",  time = 20, difficulty = 1, image = "recipe_28", price = 7)
+            Recipe(id = 23, name = "Tiramisu",                description = "Le dessert italien incontournable",     time = 30, difficulty = 2, image = "recipe_23", price = 8, note = 4.9),
+            Recipe(id = 24, name = "Fondant au chocolat",     description = "Cœur coulant au chocolat noir",        time = 20, difficulty = 2, image = "recipe_24", price = 7, note = 4.8),
+            Recipe(id = 25, name = "Tarte aux fraises",       description = "Tarte fraîche et légère",               time = 45, difficulty = 3, image = "recipe_25", price = 9, note = 4.5),
+            Recipe(id = 26, name = "Crème brûlée",            description = "Crème vanille et caramel croustillant", time = 40, difficulty = 3, image = "recipe_26", price = 8, note = 4.7),
+            Recipe(id = 27, name = "Mousse au chocolat",      description = "Mousse aérienne au chocolat noir",      time = 20, difficulty = 2, image = "recipe_27", price = 6, note = 4.6),
+            Recipe(id = 28, name = "Panna Cotta",             description = "Panna cotta vanille et coulis fraise",  time = 20, difficulty = 1, image = "recipe_28", price = 7, note = 4.4)
         )
         recipes.forEach { recipeDao.insertRecipe(it) }
 

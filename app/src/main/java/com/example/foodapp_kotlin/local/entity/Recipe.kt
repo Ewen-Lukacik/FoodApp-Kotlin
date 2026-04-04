@@ -12,5 +12,6 @@ data class Recipe(
     val time: Int,
     val difficulty: Int,
     val image: String,
-    val price: Int = 0
+    val price: Int = 0,
+    val note: Double = 4.5
 )
