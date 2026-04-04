@@ -33,7 +33,10 @@ import com.example.foodapp_kotlin.ui.theme.YellowStar
 @Composable
 fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier.padding(4.dp),
+        modifier = Modifier
+            .width(170.dp)
+            .then(modifier)
+            .padding(4.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -105,7 +108,8 @@ fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     color = TextPrimary,
-                    maxLines = 1
+                    maxLines = 2,
+                    minLines = 2
                 )
                 Text(
                     "Note • ${recipe.time} min",
