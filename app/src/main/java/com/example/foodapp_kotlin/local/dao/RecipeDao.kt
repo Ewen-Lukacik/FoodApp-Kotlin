@@ -38,4 +38,22 @@ interface RecipeDao {
     @Transaction
     @Query("SELECT * FROM Recipe")
     suspend fun getRecipesWithIngredients(): List<RecipeWithIngredients>
+
+    // Search recipes by name
+    @Query("SELECT * FROM Recipe WHERE name LIKE '%' || :query || '%'")
+    suspend fun searchRecipesByName(query: String): List<Recipe>
+
+    // Recover a single recipe by ID
+    @Query("SELECT * FROM Recipe WHERE id = :recipeId")
+    suspend fun getRecipeById(recipeId: Int): Recipe?
+
+    // Recover a single recipe with its ingredients
+    @Transaction
+    @Query("SELECT * FROM Recipe WHERE id = :recipeId")
+    suspend fun getRecipeWithIngredients(recipeId: Int): RecipeWithIngredients?
+
+    // Recover a single recipe with its categories
+    @Transaction
+    @Query("SELECT * FROM Recipe WHERE id = :recipeId")
+    suspend fun getRecipeWithCategories(recipeId: Int): RecipeWithCategories?
 }
