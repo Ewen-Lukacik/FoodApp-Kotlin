@@ -109,6 +109,7 @@ fun FavoritesScreen(navController: NavController, authViewModel: AuthViewModel) 
                     RecipeCard(
                         recipe = recipe,
                         modifier = Modifier.fillMaxWidth(),
+                        onClick = { navController.navigate("dish/${recipe.id}") },
                         isFavorite = recipe.id in favoriteIds,
                         onFavoriteClick = { authViewModel.toggleFavorite(recipe.id) }
                     )

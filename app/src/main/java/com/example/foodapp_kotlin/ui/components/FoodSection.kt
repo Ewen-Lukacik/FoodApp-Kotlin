@@ -66,6 +66,7 @@ fun FoodSection(
         recipes.forEach { recipe ->
             RecipeCard(
                 recipe = recipe,
+                onClick = { navController.navigate("dish/${recipe.id}") },
                 isFavorite = recipe.id in favoriteIds,
                 onFavoriteClick = { onFavoriteClick(recipe.id) }
             )

@@ -36,10 +36,12 @@ import com.example.foodapp_kotlin.ui.theme.YellowStar
 fun RecipeCard(
     recipe: Recipe,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
     isFavorite: Boolean = false,
     onFavoriteClick: () -> Unit = {}
 ) {
     Card(
+        onClick = onClick,
         modifier = Modifier
             .width(170.dp)
             .then(modifier)
