@@ -61,7 +61,17 @@ class MainActivity : ComponentActivity() {
                         // Sous-pages
                         composable("edit_profile")    { EditProfileScreen(navController) }
                         composable("contact")         { ContactScreen(navController) }
-                        composable("all_recipes")     { AllRecipesScreen(navController) }
+                        composable(
+                            "all_recipes/{categoryId}",
+                            arguments = listOf(
+                                androidx.navigation.navArgument("categoryId") {
+                                    type = androidx.navigation.NavType.IntType
+                                }
+                            )
+                        ) { backStackEntry ->
+                            val categoryId = backStackEntry.arguments?.getInt("categoryId") ?: 0
+                            AllRecipesScreen(navController, categoryId = categoryId)
+                        }
                         composable("category_detail") { CategoryDetailScreen(navController) }
                     }
                 }

@@ -39,7 +39,7 @@ fun FoodSection(
             fontSize = 18.sp,
             color = TextPrimary
         )
-        TextButton(onClick = { navController.navigate("all_recipes") }) {
+        TextButton(onClick = { navController.navigate("all_recipes/${category.id}") }) {
             Text(
                 "Voir tout",
                 fontSize = 13.sp,
