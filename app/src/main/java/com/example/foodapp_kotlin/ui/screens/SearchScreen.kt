@@ -112,7 +112,8 @@ fun SearchScreen(navController: NavController) {
                         rowRecipes.forEach { recipe ->
                             RecipeCard(
                                 recipe = recipe,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
+                                onClick = { navController.navigate("dish/${recipe.id}") }
                             )
                         }
                         // Fill empty space if odd number
