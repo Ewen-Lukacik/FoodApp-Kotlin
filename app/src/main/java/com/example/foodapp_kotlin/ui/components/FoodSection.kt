@@ -24,7 +24,9 @@ import com.example.foodapp_kotlin.ui.theme.TextPrimary
 fun FoodSection(
     navController: NavController,
     category: Category,
-    recipes: List<Recipe>
+    recipes: List<Recipe>,
+    favoriteIds: Set<Int> = emptySet(),
+    onFavoriteClick: (Int) -> Unit = {}
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -64,7 +66,8 @@ fun FoodSection(
         recipes.forEach { recipe ->
             RecipeCard(
                 recipe = recipe,
-                onClick = { navController.navigate("dish/${recipe.id}") }
+                isFavorite = recipe.id in favoriteIds,
+                onFavoriteClick = { onFavoriteClick(recipe.id) }
             )
         }
     }

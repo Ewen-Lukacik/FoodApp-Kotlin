@@ -20,16 +20,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.foodapp_kotlin.ui.components.RecipeCard
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 import com.example.foodapp_kotlin.ui.viewmodel.RecipeViewModel
 import com.example.foodapp_kotlin.ui.theme.Background
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AllRecipesScreen(navController: NavController, categoryId: Int) {
+fun AllRecipesScreen(navController: NavController, categoryId: Int, authViewModel: AuthViewModel) {
     val viewModel: RecipeViewModel = viewModel()
     val recipes by viewModel.recipesForCategory.collectAsState()
     val categoryName by viewModel.categoryName.collectAsState()
+    val favoriteIds by authViewModel.favoriteIds.collectAsState()
 
     LaunchedEffect(categoryId) {
         viewModel.loadRecipesForCategory(categoryId)
@@ -77,7 +79,8 @@ fun AllRecipesScreen(navController: NavController, categoryId: Int) {
                 RecipeCard(
                     recipe = recipe,
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { navController.navigate("dish/${recipe.id}") }
+                    isFavorite = recipe.id in favoriteIds,
+                    onFavoriteClick = { authViewModel.toggleFavorite(recipe.id) }
                 )
             }
         }

@@ -57,21 +57,11 @@ class MainActivity : ComponentActivity() {
                         composable("register") { RegisterScreen(navController, authViewModel) }
 
                         // Application principale
-                        composable("home")      { HomeScreen(navController) }
+                        composable("home")      { HomeScreen(navController, authViewModel) }
                         composable("search")    { SearchScreen(navController) }
-                        composable("favorites") { FavoritesScreen(navController) }
+                        composable("favorites") { FavoritesScreen(navController, authViewModel) }
                         composable("profile")   { ProfileScreen(navController, authViewModel) }
-                        composable(
-                            "dish/{recipeId}",
-                            arguments = listOf(
-                                androidx.navigation.navArgument("recipeId") {
-                                    type = androidx.navigation.NavType.IntType
-                                }
-                            )
-                        ) { backStackEntry ->
-                            val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
-                            DishScreen(navController, recipeId = recipeId)
-                        }
+                        composable("dish")      { DishScreen(navController) }
 
                         // Sous-pages
                         composable("edit_profile")    { EditProfileScreen(navController, authViewModel) }
@@ -85,7 +75,7 @@ class MainActivity : ComponentActivity() {
                             )
                         ) { backStackEntry ->
                             val categoryId = backStackEntry.arguments?.getInt("categoryId") ?: 0
-                            AllRecipesScreen(navController, categoryId = categoryId)
+                            AllRecipesScreen(navController, categoryId = categoryId, authViewModel = authViewModel)
                         }
                         composable("category_detail") { CategoryDetailScreen(navController) }
                     }

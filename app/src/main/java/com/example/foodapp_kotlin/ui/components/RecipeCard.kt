@@ -2,9 +2,11 @@ package com.example.foodapp_kotlin.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
@@ -31,9 +33,13 @@ import com.example.foodapp_kotlin.ui.theme.TextSecondary
 import com.example.foodapp_kotlin.ui.theme.YellowStar
 
 @Composable
-fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
+fun RecipeCard(
+    recipe: Recipe,
+    modifier: Modifier = Modifier,
+    isFavorite: Boolean = false,
+    onFavoriteClick: () -> Unit = {}
+) {
     Card(
-        onClick = onClick,
         modifier = Modifier
             .width(170.dp)
             .then(modifier)
@@ -70,12 +76,13 @@ fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, onClick: () -> Uni
                         .padding(8.dp)
                         .size(30.dp)
                         .clip(RoundedCornerShape(50))
-                        .background(Color.White.copy(alpha = 0.9f)),
+                        .background(Color.White.copy(alpha = 0.9f))
+                        .clickable { onFavoriteClick() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.FavoriteBorder,
-                        contentDescription = "Sauvegarder",
+                        imageVector = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                        contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
                         tint = Primary,
                         modifier = Modifier.size(16.dp)
                     )

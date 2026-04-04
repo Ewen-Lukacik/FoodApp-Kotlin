@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import com.example.foodapp_kotlin.R
 import com.example.foodapp_kotlin.ui.components.FoodSection
 import com.example.foodapp_kotlin.ui.components.MainScaffold
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 import com.example.foodapp_kotlin.ui.viewmodel.RecipeViewModel
 import com.example.foodapp_kotlin.ui.theme.Background
 import com.example.foodapp_kotlin.ui.theme.Primary
@@ -32,9 +33,10 @@ import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
     val viewModel: RecipeViewModel = viewModel()
     val categoriesWithRecipes by viewModel.categoriesWithRecipes.collectAsState()
+    val favoriteIds by authViewModel.favoriteIds.collectAsState()
 
     MainScaffold(navController = navController) { innerPadding ->
         LazyColumn(
@@ -129,7 +131,9 @@ fun HomeScreen(navController: NavController) {
                     FoodSection(
                         navController = navController,
                         category = categoryWithRecipes.category,
-                        recipes = categoryWithRecipes.recipes
+                        recipes = categoryWithRecipes.recipes,
+                        favoriteIds = favoriteIds,
+                        onFavoriteClick = { authViewModel.toggleFavorite(it) }
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                 }

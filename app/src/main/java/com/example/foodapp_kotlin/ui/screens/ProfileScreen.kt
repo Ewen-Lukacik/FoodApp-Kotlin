@@ -40,6 +40,7 @@ import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 @Composable
 fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
     val user by authViewModel.currentUser.collectAsState()
+    val favoriteIds by authViewModel.favoriteIds.collectAsState()
 
     MainScaffold(navController = navController) { innerPadding ->
         Column(
@@ -84,14 +85,11 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
             }
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
                     .offset(y = (-24).dp)
             ) {
-                StatCard("12", "Favoris", modifier = Modifier.weight(1f))
-                StatCard("34", "Recettes testées", modifier = Modifier.weight(1f))
-                StatCard("5", "Catégories", modifier = Modifier.weight(1f))
+                StatCard("${favoriteIds.size}", "Favoris", modifier = Modifier.fillMaxWidth())
             }
 
             Column(
