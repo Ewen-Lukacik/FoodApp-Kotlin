@@ -1,6 +1,8 @@
 package com.example.foodapp_kotlin.ui.components
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Icon
@@ -13,21 +15,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.foodapp_kotlin.local.entity.Category
 import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 
 @Composable
-fun FoodSection(navController: NavController) {
-    val dummyRecipe = Recipe(
-        name = "Pâtes Carbonara",
-        description = "Les vraies carbonara italiennes",
-        time = 25,
-        difficulty = 2,
-        image = "",
-        price = 12
-    )
-
+fun FoodSection(
+    navController: NavController,
+    category: Category,
+    recipes: List<Recipe>
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -36,7 +34,7 @@ fun FoodSection(navController: NavController) {
             .padding(top = 20.dp, bottom = 8.dp)
     ) {
         Text(
-            "Classiques Italiens",
+            category.name,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             color = TextPrimary
@@ -59,9 +57,12 @@ fun FoodSection(navController: NavController) {
     }
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
     ) {
-        RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
-        RecipeCard(recipe = dummyRecipe.copy(name = "Pizza Margherita"), modifier = Modifier.weight(1f))
+        recipes.forEach { recipe ->
+            RecipeCard(recipe = recipe)
+        }
     }
 }

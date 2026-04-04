@@ -4,9 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,10 +20,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.foodapp_kotlin.R
 import com.example.foodapp_kotlin.ui.components.FoodSection
 import com.example.foodapp_kotlin.ui.components.MainScaffold
+import com.example.foodapp_kotlin.ui.viewmodel.RecipeViewModel
 import com.example.foodapp_kotlin.ui.theme.Background
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
@@ -28,6 +33,9 @@ import com.example.foodapp_kotlin.ui.theme.TextSecondary
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val viewModel: RecipeViewModel = viewModel()
+    val categoriesWithRecipes by viewModel.categoriesWithRecipes.collectAsState()
+
     MainScaffold(navController = navController) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -116,12 +124,14 @@ fun HomeScreen(navController: NavController) {
                 }
             }
 
-            item {
+            items(categoriesWithRecipes) { categoryWithRecipes ->
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                    FoodSection(navController)
+                    FoodSection(
+                        navController = navController,
+                        category = categoryWithRecipes.category,
+                        recipes = categoryWithRecipes.recipes
+                    )
                     Spacer(modifier = Modifier.height(4.dp))
-                    FoodSection(navController)
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }

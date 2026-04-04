@@ -26,6 +26,9 @@ interface RecipeDao {
     @Query("SELECT * FROM Recipe")
     suspend fun getAllRecipes(): List<Recipe>
 
+    @Query("SELECT Recipe.* FROM Recipe INNER JOIN RecipeCategoryCrossRef ON Recipe.id = RecipeCategoryCrossRef.recipeId WHERE RecipeCategoryCrossRef.categoryId = :categoryId")
+    suspend fun getAllRecipesFromCategory(categoryId: Int): List<Recipe>
+
     // Recover a recipe with its categories
     @Transaction
     @Query("SELECT * FROM Recipe")

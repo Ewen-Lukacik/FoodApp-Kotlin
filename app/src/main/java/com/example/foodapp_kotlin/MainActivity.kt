@@ -7,9 +7,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.foodapp_kotlin.local.DatabaseSeeder
+import com.example.foodapp_kotlin.local.database.AppDatabase
+import kotlinx.coroutines.launch
 import com.example.foodapp_kotlin.ui.screens.AllRecipesScreen
 import com.example.foodapp_kotlin.ui.screens.CategoryDetailScreen
 import com.example.foodapp_kotlin.ui.screens.ContactScreen
@@ -28,6 +32,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        lifecycleScope.launch {
+            DatabaseSeeder.seedDatabase(AppDatabase.getInstance(this@MainActivity))
+        }
+
         setContent {
             FoodAppKotlinTheme {
                 val navController = rememberNavController()
