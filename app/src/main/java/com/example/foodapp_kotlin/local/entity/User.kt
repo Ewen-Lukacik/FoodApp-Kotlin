@@ -13,5 +13,6 @@ data class User(
     val email: String,
     val passwordHash: String,
     val salt: String,
-    val phone: String = ""
+    val phone: String = "",
+    val profileImage: String = ""
 )

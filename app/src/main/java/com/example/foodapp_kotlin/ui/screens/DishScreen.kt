@@ -9,6 +9,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.DateRange
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.*
@@ -22,14 +24,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.foodapp_kotlin.R
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 import com.example.foodapp_kotlin.ui.viewmodel.RecipeViewModel
+import com.example.foodapp_kotlin.ui.utils.imageResForName
 import com.example.foodapp_kotlin.ui.theme.Cream
 import com.example.foodapp_kotlin.ui.theme.DividerGray
 import com.example.foodapp_kotlin.ui.theme.GreenAccent
@@ -40,16 +44,19 @@ import com.example.foodapp_kotlin.ui.theme.YellowStar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DishScreen(navController: NavController, recipeId: Int) {
+fun DishScreen(navController: NavController, recipeId: Int, authViewModel: AuthViewModel) {
     val viewModel: RecipeViewModel = viewModel()
     val recipe by viewModel.selectedRecipe.collectAsState()
     val ingredients by viewModel.recipeIngredients.collectAsState()
     val categories by viewModel.recipeCategories.collectAsState()
+    val favoriteIds by authViewModel.favoriteIds.collectAsState()
+    val isFavorite = recipeId in favoriteIds
 
     LaunchedEffect(recipeId) {
         viewModel.loadRecipeDetail(recipeId)
     }
 
+    val context = LocalContext.current
     val difficultyLabel = when (recipe?.difficulty) {
         1 -> "Facile"
         2 -> "Moyen"
@@ -66,11 +73,11 @@ fun DishScreen(navController: NavController, recipeId: Int) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = "Retour",
-                            tint = Color.White
+                            tint = TextPrimary
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Cream)
             )
         },
         containerColor = Cream
@@ -97,7 +104,7 @@ fun DishScreen(navController: NavController, recipeId: Int) {
                         .height(260.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        painter = painterResource(id = imageResForName(context, recipe!!.image)),
                         contentDescription = recipe!!.name,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -221,14 +228,27 @@ fun DishScreen(navController: NavController, recipeId: Int) {
                         Spacer(modifier = Modifier.height(24.dp))
 
                         Button(
-                            onClick = {},
+                            onClick = { authViewModel.toggleFavorite(recipeId) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(54.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (isFavorite) Primary.copy(alpha = 0.15f) else Primary,
+                                contentColor = if (isFavorite) Primary else Color.White
+                            ),
                             shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text("Ajouter aux favoris", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Icon(
+                                imageVector = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
                         }
                     }
                 }

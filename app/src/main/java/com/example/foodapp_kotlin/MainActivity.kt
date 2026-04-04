@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
                             )
                         ) { backStackEntry ->
                             val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
-                            DishScreen(navController, recipeId = recipeId)
+                            DishScreen(navController, recipeId = recipeId, authViewModel = authViewModel)
                         }
 
                         // Sous-pages

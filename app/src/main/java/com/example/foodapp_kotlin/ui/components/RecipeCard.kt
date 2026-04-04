@@ -20,17 +20,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.foodapp_kotlin.R
 import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.ui.theme.GreenAccent
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
 import com.example.foodapp_kotlin.ui.theme.YellowStar
+import com.example.foodapp_kotlin.ui.utils.imageResForName
 
 @Composable
 fun RecipeCard(
@@ -40,6 +41,7 @@ fun RecipeCard(
     isFavorite: Boolean = false,
     onFavoriteClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     Card(
         onClick = onClick,
         modifier = Modifier
@@ -53,7 +55,7 @@ fun RecipeCard(
         Column {
             Box {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = imageResForName(context, recipe.image)),
                     contentDescription = recipe.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

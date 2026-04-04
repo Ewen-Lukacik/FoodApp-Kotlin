@@ -127,14 +127,15 @@ class AuthViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun updateProfile(firstName: String, lastName: String, email: String, phone: String) {
+    fun updateProfile(firstName: String, lastName: String, email: String, phone: String, profileImage: String = "") {
         viewModelScope.launch {
             val current = _currentUser.value ?: return@launch
             val updated = current.copy(
                 firstName = firstName,
                 lastName = lastName,
                 email = email.trim().lowercase(),
-                phone = phone
+                phone = phone,
+                profileImage = profileImage.ifBlank { current.profileImage }
             )
             db.userDao().updateUser(updated)
             _currentUser.value = updated

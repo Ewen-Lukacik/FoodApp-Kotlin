@@ -14,16 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.foodapp_kotlin.R
 import com.example.foodapp_kotlin.local.entity.Category
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.PrimaryLight
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
+import com.example.foodapp_kotlin.ui.utils.imageResForName
 
 @Composable
 fun CategoryCard(
@@ -32,6 +33,7 @@ fun CategoryCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     Card(
         modifier = modifier.padding(vertical = 4.dp).clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
@@ -52,7 +54,7 @@ fun CategoryCard(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = imageResForName(context, category.image)),
                     contentDescription = category.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
