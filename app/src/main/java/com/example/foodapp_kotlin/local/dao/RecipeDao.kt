@@ -8,7 +8,7 @@ import androidx.room.Transaction
 import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.local.entity.RecipeCategoryCrossRef
 import com.example.foodapp_kotlin.local.relation.RecipeWithCategories
-import com.example.foodapp_kotlin.local.relation.IngredientWithRecipes
+import com.example.foodapp_kotlin.local.relation.RecipeWithIngredients
 
 
 @Dao
@@ -34,5 +34,5 @@ interface RecipeDao {
     // Recover a recipe with its ingredients
     @Transaction
     @Query("SELECT * FROM Recipe")
-    suspend fun getRecipesWithIngredients(): List<IngredientWithRecipes>
+    suspend fun getRecipesWithIngredients(): List<RecipeWithIngredients>
 }

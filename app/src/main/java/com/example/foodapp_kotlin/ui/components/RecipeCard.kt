@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.foodapp_kotlin.R
+import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.ui.theme.GreenAccent
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
@@ -30,7 +31,7 @@ import com.example.foodapp_kotlin.ui.theme.TextSecondary
 import com.example.foodapp_kotlin.ui.theme.YellowStar
 
 @Composable
-fun RecipeCard(modifier: Modifier = Modifier) {
+fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.padding(4.dp),
         shape = RoundedCornerShape(20.dp),
@@ -41,7 +42,7 @@ fun RecipeCard(modifier: Modifier = Modifier) {
             Box {
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "Image de la recette",
+                    contentDescription = recipe.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,19 +101,19 @@ fun RecipeCard(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    "Pâtes Carbonara",
+                    recipe.name,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     color = TextPrimary,
                     maxLines = 1
                 )
                 Text(
-                    "Italien • 25 min",
+                    "Note • ${recipe.time} min",
                     fontSize = 11.sp,
                     color = TextSecondary
                 )
                 Text(
-                    "12,99 €",
+                    "${recipe.price} €",
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     color = GreenAccent

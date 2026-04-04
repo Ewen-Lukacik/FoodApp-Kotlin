@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.ui.components.MainScaffold
 import com.example.foodapp_kotlin.ui.components.RecipeCard
 import com.example.foodapp_kotlin.ui.theme.Cream
@@ -23,6 +24,15 @@ import com.example.foodapp_kotlin.ui.theme.TextSecondary
 
 @Composable
 fun FavoritesScreen(navController: NavController) {
+    val dummyRecipe = Recipe(
+        name = "Pâtes Carbonara",
+        description = "Les vraies carbonara italiennes",
+        time = 25,
+        difficulty = 2,
+        image = "",
+        price = 12
+    )
+
     MainScaffold(navController = navController) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -63,8 +73,8 @@ fun FavoritesScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    RecipeCard(modifier = Modifier.weight(1f))
-                    RecipeCard(modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
                 }
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -73,8 +83,8 @@ fun FavoritesScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    RecipeCard(modifier = Modifier.weight(1f))
-                    RecipeCard(modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
                 }
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -83,8 +93,8 @@ fun FavoritesScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    RecipeCard(modifier = Modifier.weight(1f))
-                    RecipeCard(modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }

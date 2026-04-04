@@ -13,11 +13,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 
 @Composable
 fun FoodSection(navController: NavController) {
+    val dummyRecipe = Recipe(
+        name = "Pâtes Carbonara",
+        description = "Les vraies carbonara italiennes",
+        time = 25,
+        difficulty = 2,
+        image = "",
+        price = 12
+    )
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -51,7 +61,7 @@ fun FoodSection(navController: NavController) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
-        RecipeCard(modifier = Modifier.weight(1f))
-        RecipeCard(modifier = Modifier.weight(1f))
+        RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
+        RecipeCard(recipe = dummyRecipe.copy(name = "Pizza Margherita"), modifier = Modifier.weight(1f))
     }
 }

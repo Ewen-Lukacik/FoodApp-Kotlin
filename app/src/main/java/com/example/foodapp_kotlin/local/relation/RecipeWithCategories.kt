@@ -12,7 +12,11 @@ data class RecipeWithCategories(
     @Relation(
         parentColumn = "id",
         entityColumn = "id",
-        associateBy = Junction(RecipeCategoryCrossRef::class)
+        associateBy = Junction(
+            value = RecipeCategoryCrossRef::class,
+            parentColumn = "recipeId",
+            entityColumn = "categoryId"
+        )
     )
     val categories: List<Category>
 )

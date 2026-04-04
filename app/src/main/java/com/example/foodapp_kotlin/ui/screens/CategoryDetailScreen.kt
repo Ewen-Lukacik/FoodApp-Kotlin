@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.ui.components.RecipeCard
 import com.example.foodapp_kotlin.ui.theme.Background
 import com.example.foodapp_kotlin.ui.theme.Primary
@@ -23,6 +24,15 @@ import com.example.foodapp_kotlin.ui.theme.TextSecondary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDetailScreen(navController: NavController, categoryName: String = "Italien") {
+    val dummyRecipe = Recipe(
+        name = "Pâtes Carbonara",
+        description = "Les vraies carbonara italiennes",
+        time = 25,
+        difficulty = 2,
+        image = "",
+        price = 12
+    )
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -86,7 +96,7 @@ fun CategoryDetailScreen(navController: NavController, categoryName: String = "I
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(List(10) { it }) {
-                    RecipeCard(modifier = Modifier.fillMaxWidth())
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.fillMaxWidth())
                 }
             }
         }
