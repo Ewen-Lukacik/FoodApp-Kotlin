@@ -225,6 +225,19 @@ fun DishScreen(navController: NavController, recipeId: Int, authViewModel: AuthV
                             }
                         }
 
+                        Spacer(modifier = Modifier.height(20.dp))
+                        HorizontalDivider(color = DividerGray)
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        Text("Instructions", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = TextPrimary)
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            recipe!!.instructions,
+                            fontSize = 14.sp,
+                            color = TextSecondary,
+                            lineHeight = 22.sp
+                        )
+
                         Spacer(modifier = Modifier.height(24.dp))
 
                         Button(
