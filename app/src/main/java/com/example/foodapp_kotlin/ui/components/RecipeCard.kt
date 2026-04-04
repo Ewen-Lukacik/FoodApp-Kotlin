@@ -2,9 +2,11 @@ package com.example.foodapp_kotlin.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
@@ -18,21 +20,34 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.foodapp_kotlin.R
+import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.ui.theme.GreenAccent
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
 import com.example.foodapp_kotlin.ui.theme.YellowStar
+import com.example.foodapp_kotlin.ui.utils.imageResForName
 
 @Composable
-fun RecipeCard(modifier: Modifier = Modifier) {
+fun RecipeCard(
+    recipe: Recipe,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    isFavorite: Boolean = false,
+    onFavoriteClick: () -> Unit = {}
+) {
+    val context = LocalContext.current
     Card(
-        modifier = modifier.padding(4.dp),
+        onClick = onClick,
+        modifier = Modifier
+            .width(170.dp)
+            .then(modifier)
+            .padding(4.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -40,8 +55,8 @@ fun RecipeCard(modifier: Modifier = Modifier) {
         Column {
             Box {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "Image de la recette",
+                    painter = painterResource(id = imageResForName(context, recipe.image)),
+                    contentDescription = recipe.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -65,12 +80,13 @@ fun RecipeCard(modifier: Modifier = Modifier) {
                         .padding(8.dp)
                         .size(30.dp)
                         .clip(RoundedCornerShape(50))
-                        .background(Color.White.copy(alpha = 0.9f)),
+                        .background(Color.White.copy(alpha = 0.9f))
+                        .clickable { onFavoriteClick() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.FavoriteBorder,
-                        contentDescription = "Sauvegarder",
+                        imageVector = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                        contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
                         tint = Primary,
                         modifier = Modifier.size(16.dp)
                     )
@@ -91,7 +107,7 @@ fun RecipeCard(modifier: Modifier = Modifier) {
                         modifier = Modifier.size(12.dp)
                     )
                     Spacer(modifier = Modifier.width(2.dp))
-                    Text("4,8", fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
+                    Text(recipe.note.toString().replace('.', ','), fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
                 }
             }
 
@@ -100,19 +116,20 @@ fun RecipeCard(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    "Pâtes Carbonara",
+                    recipe.name,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     color = TextPrimary,
-                    maxLines = 1
+                    maxLines = 2,
+                    minLines = 2
                 )
                 Text(
-                    "Italien • 25 min",
+                    "Note • ${recipe.time} min",
                     fontSize = 11.sp,
                     color = TextSecondary
                 )
                 Text(
-                    "12,99 €",
+                    "${recipe.price} €",
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     color = GreenAccent

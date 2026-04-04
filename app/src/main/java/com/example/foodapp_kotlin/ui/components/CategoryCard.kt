@@ -14,18 +14,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.foodapp_kotlin.R
+import com.example.foodapp_kotlin.local.entity.Category
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.PrimaryLight
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
+import com.example.foodapp_kotlin.ui.utils.imageResForName
 
 @Composable
-fun CategoryCard(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
+fun CategoryCard(
+    category: Category,
+    recipeCount: Int,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    val context = LocalContext.current
     Card(
         modifier = modifier.padding(vertical = 4.dp).clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
@@ -46,8 +54,8 @@ fun CategoryCard(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "Category image",
+                    painter = painterResource(id = imageResForName(context, category.image)),
+                    contentDescription = category.name,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(56.dp)
@@ -59,13 +67,13 @@ fun CategoryCard(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    "Italien",
+                    category.name,
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
                     color = TextPrimary
                 )
                 Text(
-                    "24 recettes",
+                    "$recipeCount recette${if (recipeCount > 1) "s" else ""}",
                     fontSize = 12.sp,
                     color = TextSecondary
                 )

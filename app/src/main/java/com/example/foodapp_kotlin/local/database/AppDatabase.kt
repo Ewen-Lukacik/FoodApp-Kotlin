@@ -1,6 +1,8 @@
 package com.example.foodapp_kotlin.local.database
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.foodapp_kotlin.local.dao.*
 import com.example.foodapp_kotlin.local.entity.*
@@ -11,9 +13,11 @@ import com.example.foodapp_kotlin.local.entity.*
         Recipe::class,
         Category::class,
         RecipeIngredientCrossRef::class,
-        RecipeCategoryCrossRef::class
+        RecipeCategoryCrossRef::class,
+        User::class,
+        UserFavorite::class
     ],
-    version = 1
+    version = 5
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -25,4 +29,20 @@ abstract class AppDatabase : RoomDatabase() {
 
     // DAO for category
     abstract fun categoryDao(): CategoryDao
+
+    // DAO for user
+    abstract fun userDao(): UserDao
+
+    companion object {
+        @Volatile private var INSTANCE: AppDatabase? = null
+
+        fun getInstance(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app-db")
+                    .fallbackToDestructiveMigration()
+                    .build()
+                    .also { INSTANCE = it }
+            }
+        }
+    }
 }

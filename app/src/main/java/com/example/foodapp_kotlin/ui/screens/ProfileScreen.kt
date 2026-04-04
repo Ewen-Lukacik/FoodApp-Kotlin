@@ -1,5 +1,6 @@
 package com.example.foodapp_kotlin.ui.screens
 
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,11 +15,15 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -33,9 +38,13 @@ import com.example.foodapp_kotlin.ui.theme.PrimaryLight
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val user by authViewModel.currentUser.collectAsState()
+    val favoriteIds by authViewModel.favoriteIds.collectAsState()
+
     MainScaffold(navController = navController) { innerPadding ->
         Column(
             modifier = Modifier
@@ -55,23 +64,38 @@ fun ProfileScreen(navController: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
-                        contentDescription = "Profile picture",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(88.dp)
-                            .clip(CircleShape)
-                    )
+                    val profileImage = user?.profileImage ?: ""
+                    val bitmap = remember(profileImage) {
+                        if (profileImage.isNotBlank()) BitmapFactory.decodeFile(profileImage)?.asImageBitmap() else null
+                    }
+                    if (bitmap != null) {
+                        Image(
+                            bitmap = bitmap,
+                            contentDescription = "Photo de profil",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(88.dp)
+                                .clip(CircleShape)
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_profile_placeholder),
+                            contentDescription = "Photo de profil",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(88.dp)
+                                .clip(CircleShape)
+                        )
+                    }
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        "Imene Bentifraouine",
+                        "${user?.firstName ?: ""} ${user?.lastName ?: ""}".trim(),
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                         color = Color.White
                     )
                     Text(
-                        "imene@exemple.fr",
+                        user?.email ?: "",
                         fontSize = 13.sp,
                         color = Color.White.copy(alpha = 0.8f)
                     )
@@ -79,14 +103,17 @@ fun ProfileScreen(navController: NavController) {
             }
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .offset(y = (-24).dp)
+                    .offset(y = (-24).dp),
+                horizontalArrangement = Arrangement.Center
             ) {
-                StatCard("12", "Favoris", modifier = Modifier.weight(1f))
-                StatCard("34", "Recettes testées", modifier = Modifier.weight(1f))
-                StatCard("5", "Catégories", modifier = Modifier.weight(1f))
+                StatCard(
+                    "${favoriteIds.size}",
+                    "Favoris",
+                    modifier = Modifier.fillMaxWidth(0.33f)
+                )
             }
 
             Column(
@@ -120,6 +147,7 @@ fun ProfileScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
+                                authViewModel.logout()
                                 navController.navigate("login") {
                                     popUpTo(0) { inclusive = true }
                                 }

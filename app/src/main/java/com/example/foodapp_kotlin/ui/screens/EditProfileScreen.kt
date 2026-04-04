@@ -1,7 +1,12 @@
 package com.example.foodapp_kotlin.ui.screens
 
+import android.graphics.BitmapFactory
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -16,7 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,14 +35,51 @@ import com.example.foodapp_kotlin.ui.theme.Background
 import com.example.foodapp_kotlin.ui.theme.DividerGray
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
+import com.example.foodapp_kotlin.ui.viewmodel.AuthResult
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProfileScreen(navController: NavController) {
-    var prenom by remember { mutableStateOf("Imene") }
-    var nom by remember { mutableStateOf("Bentifraouine") }
-    var email by remember { mutableStateOf("imene@exemple.fr") }
-    var telephone by remember { mutableStateOf("+33 6 00 00 00 00") }
+fun EditProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val user by authViewModel.currentUser.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    var prenom by remember(user) { mutableStateOf(user?.firstName ?: "") }
+    var nom by remember(user) { mutableStateOf(user?.lastName ?: "") }
+    var email by remember(user) { mutableStateOf(user?.email ?: "") }
+    var telephone by remember(user) { mutableStateOf(user?.phone ?: "") }
+    var selectedImagePath by remember(user) { mutableStateOf(user?.profileImage ?: "") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        uri?.let {
+            scope.launch(Dispatchers.IO) {
+                val dest = File(context.filesDir, "profile_${System.currentTimeMillis()}.jpg")
+                context.contentResolver.openInputStream(uri)?.use { input ->
+                    dest.outputStream().use { output -> input.copyTo(output) }
+                }
+                withContext(Dispatchers.Main) {
+                    selectedImagePath = dest.absolutePath
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(authViewModel) {
+        authViewModel.authResult.collect { result ->
+            when (result) {
+                is AuthResult.Success -> navController.popBackStack()
+                is AuthResult.Error -> errorMessage = result.message
+            }
+        }
+    }
 
     val fieldColors = OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = Color.White,
@@ -76,15 +120,36 @@ fun EditProfileScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            Box(contentAlignment = Alignment.BottomEnd) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "Photo de profil",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(96.dp)
-                        .clip(CircleShape)
-                )
+            Box(
+                contentAlignment = Alignment.BottomEnd,
+                modifier = Modifier.clickable {
+                    photoPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
+            ) {
+                val bitmap = remember(selectedImagePath) {
+                    if (selectedImagePath.isNotBlank()) BitmapFactory.decodeFile(selectedImagePath)?.asImageBitmap() else null
+                }
+                if (bitmap != null) {
+                    Image(
+                        bitmap = bitmap,
+                        contentDescription = "Photo de profil",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(96.dp)
+                            .clip(CircleShape)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_profile_placeholder),
+                        contentDescription = "Photo de profil",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(96.dp)
+                            .clip(CircleShape)
+                    )
+                }
                 Box(
                     modifier = Modifier
                         .size(28.dp)
@@ -154,10 +219,26 @@ fun EditProfileScreen(navController: NavController) {
                 colors = fieldColors
             )
 
+            if (errorMessage != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = errorMessage!!,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 13.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = { navController.popBackStack() },
+                onClick = {
+                    if (prenom.isBlank() || nom.isBlank() || email.isBlank()) {
+                        errorMessage = "Veuillez remplir tous les champs obligatoires."
+                    } else {
+                        authViewModel.updateProfile(prenom, nom, email, telephone, selectedImagePath)
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),

@@ -8,7 +8,7 @@ import androidx.room.Transaction
 import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.local.entity.RecipeCategoryCrossRef
 import com.example.foodapp_kotlin.local.relation.RecipeWithCategories
-import com.example.foodapp_kotlin.local.relation.IngredientWithRecipes
+import com.example.foodapp_kotlin.local.relation.RecipeWithIngredients
 
 
 @Dao
@@ -26,6 +26,12 @@ interface RecipeDao {
     @Query("SELECT * FROM Recipe")
     suspend fun getAllRecipes(): List<Recipe>
 
+    @Query("SELECT Recipe.* FROM Recipe INNER JOIN RecipeCategoryCrossRef ON Recipe.id = RecipeCategoryCrossRef.recipeId WHERE RecipeCategoryCrossRef.categoryId = :categoryId")
+    suspend fun getAllRecipesFromCategory(categoryId: Int): List<Recipe>
+
+    @Query("SELECT * FROM Recipe WHERE id IN (:ids)")
+    suspend fun getRecipesByIds(ids: List<Int>): List<Recipe>
+
     // Recover a recipe with its categories
     @Transaction
     @Query("SELECT * FROM Recipe")
@@ -34,5 +40,23 @@ interface RecipeDao {
     // Recover a recipe with its ingredients
     @Transaction
     @Query("SELECT * FROM Recipe")
-    suspend fun getRecipesWithIngredients(): List<IngredientWithRecipes>
+    suspend fun getRecipesWithIngredients(): List<RecipeWithIngredients>
+
+    // Search recipes by name
+    @Query("SELECT * FROM Recipe WHERE name LIKE '%' || :query || '%'")
+    suspend fun searchRecipesByName(query: String): List<Recipe>
+
+    // Recover a single recipe by ID
+    @Query("SELECT * FROM Recipe WHERE id = :recipeId")
+    suspend fun getRecipeById(recipeId: Int): Recipe?
+
+    // Recover a single recipe with its ingredients
+    @Transaction
+    @Query("SELECT * FROM Recipe WHERE id = :recipeId")
+    suspend fun getRecipeWithIngredients(recipeId: Int): RecipeWithIngredients?
+
+    // Recover a single recipe with its categories
+    @Transaction
+    @Query("SELECT * FROM Recipe WHERE id = :recipeId")
+    suspend fun getRecipeWithCategories(recipeId: Int): RecipeWithCategories?
 }

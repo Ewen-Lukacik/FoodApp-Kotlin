@@ -28,11 +28,25 @@ import com.example.foodapp_kotlin.ui.theme.DividerGray
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
+import com.example.foodapp_kotlin.ui.viewmodel.AuthResult
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(authViewModel) {
+        authViewModel.authResult.collect { result ->
+            when (result) {
+                is AuthResult.Success -> navController.navigate("home") {
+                    popUpTo("login") { inclusive = true }
+                }
+                is AuthResult.Error -> errorMessage = result.message
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -74,7 +88,10 @@ fun LoginScreen(navController: NavController) {
 
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = {
+                    email = it
+                    errorMessage = null
+                },
                 label = { Text("Adresse e-mail") },
                 placeholder = { Text("exemple@email.fr") },
                 singleLine = true,
@@ -94,7 +111,10 @@ fun LoginScreen(navController: NavController) {
 
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = {
+                    password = it
+                    errorMessage = null
+                },
                 label = { Text("Mot de passe") },
                 placeholder = { Text("••••••••") },
                 singleLine = true,
@@ -111,15 +131,13 @@ fun LoginScreen(navController: NavController) {
                 )
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+            if (errorMessage != null) {
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    "Mot de passe oublié ?",
+                    text = errorMessage!!,
+                    color = MaterialTheme.colorScheme.error,
                     fontSize = 13.sp,
-                    color = Primary,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.clickable {}
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
@@ -127,8 +145,10 @@ fun LoginScreen(navController: NavController) {
 
             Button(
                 onClick = {
-                    navController.navigate("home") {
-                        popUpTo("login") { inclusive = true }
+                    if (email.isBlank() || password.isBlank()) {
+                        errorMessage = "Veuillez remplir tous les champs."
+                    } else {
+                        authViewModel.login(email, password)
                     }
                 },
                 modifier = Modifier
@@ -141,40 +161,6 @@ fun LoginScreen(navController: NavController) {
                     "Se connecter",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                HorizontalDivider(modifier = Modifier.weight(1f), color = DividerGray)
-                Text(
-                    "  ou  ",
-                    fontSize = 13.sp,
-                    color = TextSecondary
-                )
-                HorizontalDivider(modifier = Modifier.weight(1f), color = DividerGray)
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            OutlinedButton(
-                onClick = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(54.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White),
-                border = ButtonDefaults.outlinedButtonBorder.copy(width = 1.dp)
-            ) {
-                Text(
-                    "Continuer avec Google",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = TextPrimary
                 )
             }
 

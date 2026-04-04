@@ -1,6 +1,8 @@
 package com.example.foodapp_kotlin.ui.components
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Icon
@@ -13,11 +15,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.foodapp_kotlin.local.entity.Category
+import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 
 @Composable
-fun FoodSection(navController: NavController) {
+fun FoodSection(
+    navController: NavController,
+    category: Category,
+    recipes: List<Recipe>,
+    favoriteIds: Set<Int> = emptySet(),
+    onFavoriteClick: (Int) -> Unit = {}
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -26,12 +36,12 @@ fun FoodSection(navController: NavController) {
             .padding(top = 20.dp, bottom = 8.dp)
     ) {
         Text(
-            "Classiques Italiens",
+            category.name,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             color = TextPrimary
         )
-        TextButton(onClick = { navController.navigate("all_recipes") }) {
+        TextButton(onClick = { navController.navigate("all_recipes/${category.id}") }) {
             Text(
                 "Voir tout",
                 fontSize = 13.sp,
@@ -49,9 +59,17 @@ fun FoodSection(navController: NavController) {
     }
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
     ) {
-        RecipeCard(modifier = Modifier.weight(1f))
-        RecipeCard(modifier = Modifier.weight(1f))
+        recipes.forEach { recipe ->
+            RecipeCard(
+                recipe = recipe,
+                onClick = { navController.navigate("dish/${recipe.id}") },
+                isFavorite = recipe.id in favoriteIds,
+                onFavoriteClick = { onFavoriteClick(recipe.id) }
+            )
+        }
     }
 }

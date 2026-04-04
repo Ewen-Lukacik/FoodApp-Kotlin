@@ -16,13 +16,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.foodapp_kotlin.R
 import com.example.foodapp_kotlin.ui.theme.Primary
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen(navController: NavController, authViewModel: AuthViewModel) {
     LaunchedEffect(Unit) {
         delay(2000)
-        navController.navigate("login") {
+        val destination = if (authViewModel.isLoggedIn) "home" else "login"
+        navController.navigate(destination) {
             popUpTo("splash") { inclusive = true }
         }
     }
