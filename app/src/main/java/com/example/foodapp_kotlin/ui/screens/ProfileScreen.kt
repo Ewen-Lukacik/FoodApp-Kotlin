@@ -14,6 +14,8 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,9 +35,12 @@ import com.example.foodapp_kotlin.ui.theme.PrimaryLight
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val user by authViewModel.currentUser.collectAsState()
+
     MainScaffold(navController = navController) { innerPadding ->
         Column(
             modifier = Modifier
@@ -65,13 +70,13 @@ fun ProfileScreen(navController: NavController) {
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        "Imene Bentifraouine",
+                        "${user?.firstName ?: ""} ${user?.lastName ?: ""}".trim(),
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                         color = Color.White
                     )
                     Text(
-                        "imene@exemple.fr",
+                        user?.email ?: "",
                         fontSize = 13.sp,
                         color = Color.White.copy(alpha = 0.8f)
                     )
@@ -120,6 +125,7 @@ fun ProfileScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
+                                authViewModel.logout()
                                 navController.navigate("login") {
                                     popUpTo(0) { inclusive = true }
                                 }

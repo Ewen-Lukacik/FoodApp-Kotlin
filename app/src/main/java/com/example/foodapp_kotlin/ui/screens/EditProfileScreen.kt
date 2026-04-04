@@ -28,14 +28,28 @@ import com.example.foodapp_kotlin.ui.theme.Background
 import com.example.foodapp_kotlin.ui.theme.DividerGray
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
+import com.example.foodapp_kotlin.ui.viewmodel.AuthResult
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProfileScreen(navController: NavController) {
-    var prenom by remember { mutableStateOf("Imene") }
-    var nom by remember { mutableStateOf("Bentifraouine") }
-    var email by remember { mutableStateOf("imene@exemple.fr") }
-    var telephone by remember { mutableStateOf("+33 6 00 00 00 00") }
+fun EditProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val user by authViewModel.currentUser.collectAsState()
+
+    var prenom by remember(user) { mutableStateOf(user?.firstName ?: "") }
+    var nom by remember(user) { mutableStateOf(user?.lastName ?: "") }
+    var email by remember(user) { mutableStateOf(user?.email ?: "") }
+    var telephone by remember(user) { mutableStateOf(user?.phone ?: "") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(authViewModel) {
+        authViewModel.authResult.collect { result ->
+            when (result) {
+                is AuthResult.Success -> navController.popBackStack()
+                is AuthResult.Error -> errorMessage = result.message
+            }
+        }
+    }
 
     val fieldColors = OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = Color.White,
@@ -154,10 +168,26 @@ fun EditProfileScreen(navController: NavController) {
                 colors = fieldColors
             )
 
+            if (errorMessage != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = errorMessage!!,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 13.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = { navController.popBackStack() },
+                onClick = {
+                    if (prenom.isBlank() || nom.isBlank() || email.isBlank()) {
+                        errorMessage = "Veuillez remplir tous les champs obligatoires."
+                    } else {
+                        authViewModel.updateProfile(prenom, nom, email, telephone)
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),

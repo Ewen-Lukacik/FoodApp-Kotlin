@@ -74,11 +74,7 @@ fun AllRecipesScreen(navController: NavController, categoryId: Int) {
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
             items(recipes) { recipe ->
-                RecipeCard(
-                    recipe = recipe,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { navController.navigate("dish/${recipe.id}") }
-                )
+                RecipeCard(recipe = recipe, modifier = Modifier.fillMaxWidth())
             }
         }
     }

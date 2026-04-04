@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -27,8 +28,12 @@ import com.example.foodapp_kotlin.ui.screens.RegisterScreen
 import com.example.foodapp_kotlin.ui.screens.SearchScreen
 import com.example.foodapp_kotlin.ui.screens.SplashScreen
 import com.example.foodapp_kotlin.ui.theme.FoodAppKotlinTheme
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val authViewModel: AuthViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,29 +52,19 @@ class MainActivity : ComponentActivity() {
                         startDestination = "splash"
                     ) {
                         // Flux d'authentification
-                        composable("splash")   { SplashScreen(navController) }
-                        composable("login")    { LoginScreen(navController) }
-                        composable("register") { RegisterScreen(navController) }
+                        composable("splash")   { SplashScreen(navController, authViewModel) }
+                        composable("login")    { LoginScreen(navController, authViewModel) }
+                        composable("register") { RegisterScreen(navController, authViewModel) }
 
                         // Application principale
                         composable("home")      { HomeScreen(navController) }
                         composable("search")    { SearchScreen(navController) }
                         composable("favorites") { FavoritesScreen(navController) }
-                        composable("profile")   { ProfileScreen(navController) }
-                        composable(
-                            "dish/{recipeId}",
-                            arguments = listOf(
-                                androidx.navigation.navArgument("recipeId") {
-                                    type = androidx.navigation.NavType.IntType
-                                }
-                            )
-                        ) { backStackEntry ->
-                            val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
-                            DishScreen(navController, recipeId = recipeId)
-                        }
+                        composable("profile")   { ProfileScreen(navController, authViewModel) }
+                        composable("dish")      { DishScreen(navController) }
 
                         // Sous-pages
-                        composable("edit_profile")    { EditProfileScreen(navController) }
+                        composable("edit_profile")    { EditProfileScreen(navController, authViewModel) }
                         composable("contact")         { ContactScreen(navController) }
                         composable(
                             "all_recipes/{categoryId}",

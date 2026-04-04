@@ -31,9 +31,8 @@ import com.example.foodapp_kotlin.ui.theme.TextSecondary
 import com.example.foodapp_kotlin.ui.theme.YellowStar
 
 @Composable
-fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
+fun RecipeCard(recipe: Recipe, modifier: Modifier = Modifier) {
     Card(
-        onClick = onClick,
         modifier = Modifier
             .width(170.dp)
             .then(modifier)

@@ -30,14 +30,28 @@ import com.example.foodapp_kotlin.ui.theme.DividerGray
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
+import com.example.foodapp_kotlin.ui.viewmodel.AuthResult
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
     var nom by remember { mutableStateOf("") }
     var prenom by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(authViewModel) {
+        authViewModel.authResult.collect { result ->
+            when (result) {
+                is AuthResult.Success -> navController.navigate("home") {
+                    popUpTo("splash") { inclusive = true }
+                }
+                is AuthResult.Error -> errorMessage = result.message
+            }
+        }
+    }
 
     val fieldColors = OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = Color.White,
@@ -93,7 +107,10 @@ fun RegisterScreen(navController: NavController) {
             ) {
                 OutlinedTextField(
                     value = prenom,
-                    onValueChange = { prenom = it },
+                    onValueChange = {
+                        prenom = it
+                        errorMessage = null
+                    },
                     label = { Text("Prénom") },
                     singleLine = true,
                     modifier = Modifier.weight(1f),
@@ -102,7 +119,10 @@ fun RegisterScreen(navController: NavController) {
                 )
                 OutlinedTextField(
                     value = nom,
-                    onValueChange = { nom = it },
+                    onValueChange = {
+                        nom = it
+                        errorMessage = null
+                    },
                     label = { Text("Nom") },
                     singleLine = true,
                     modifier = Modifier.weight(1f),
@@ -115,7 +135,10 @@ fun RegisterScreen(navController: NavController) {
 
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = {
+                    email = it
+                    errorMessage = null
+                },
                 label = { Text("Adresse e-mail") },
                 placeholder = { Text("exemple@email.fr") },
                 singleLine = true,
@@ -129,7 +152,10 @@ fun RegisterScreen(navController: NavController) {
 
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = {
+                    password = it
+                    errorMessage = null
+                },
                 label = { Text("Mot de passe") },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
@@ -143,7 +169,10 @@ fun RegisterScreen(navController: NavController) {
 
             OutlinedTextField(
                 value = confirmPassword,
-                onValueChange = { confirmPassword = it },
+                onValueChange = {
+                    confirmPassword = it
+                    errorMessage = null
+                },
                 label = { Text("Confirmer le mot de passe") },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
@@ -153,12 +182,30 @@ fun RegisterScreen(navController: NavController) {
                 colors = fieldColors
             )
 
+            if (errorMessage != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = errorMessage!!,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 13.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
             Spacer(modifier = Modifier.height(28.dp))
 
             Button(
                 onClick = {
-                    navController.navigate("home") {
-                        popUpTo("splash") { inclusive = true }
+                    when {
+                        prenom.isBlank() || nom.isBlank() || email.isBlank() || password.isBlank() ->
+                            errorMessage = "Veuillez remplir tous les champs."
+                        !email.contains("@") ->
+                            errorMessage = "Adresse e-mail invalide."
+                        password != confirmPassword ->
+                            errorMessage = "Les mots de passe ne correspondent pas."
+                        password.length < 6 ->
+                            errorMessage = "Le mot de passe doit contenir au moins 6 caractères."
+                        else -> authViewModel.register(prenom, nom, email, password)
                     }
                 },
                 modifier = Modifier

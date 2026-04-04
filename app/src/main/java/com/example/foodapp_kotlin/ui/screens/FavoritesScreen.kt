@@ -73,8 +73,8 @@ fun FavoritesScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f), onClick = { navController.navigate("dish/${dummyRecipe.id}") })
-                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f), onClick = { navController.navigate("dish/${dummyRecipe.id}") })
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
                 }
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -83,8 +83,8 @@ fun FavoritesScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f), onClick = { navController.navigate("dish/${dummyRecipe.id}") })
-                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f), onClick = { navController.navigate("dish/${dummyRecipe.id}") })
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
                 }
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -93,8 +93,8 @@ fun FavoritesScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f), onClick = { navController.navigate("dish/${dummyRecipe.id}") })
-                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f), onClick = { navController.navigate("dish/${dummyRecipe.id}") })
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
+                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.weight(1f))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
