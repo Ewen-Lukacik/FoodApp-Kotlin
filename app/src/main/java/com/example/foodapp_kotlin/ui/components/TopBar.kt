@@ -55,19 +55,19 @@ fun TopBar(navController: NavController) {
             )
         }
 
-        IconButton(
-            onClick = {},
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(Color.White)
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Notifications,
-                contentDescription = "Notifications",
-                tint = Primary,
-                modifier = Modifier.size(22.dp)
-            )
-        }
+//        IconButton(
+//            onClick = {},
+//            modifier = Modifier
+//                .size(40.dp)
+//                .clip(CircleShape)
+//                .background(Color.White)
+//        ) {
+//            Icon(
+//                imageVector = Icons.Rounded.Notifications,
+//                contentDescription = "Notifications",
+//                tint = Primary,
+//                modifier = Modifier.size(22.dp)
+//            )
+//        }
     }
 }

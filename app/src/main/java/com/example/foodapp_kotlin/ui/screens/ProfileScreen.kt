@@ -86,10 +86,16 @@ fun ProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
 
             Row(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .offset(y = (-24).dp)
+                    .offset(y = (-24).dp),
+                horizontalArrangement = Arrangement.Center
             ) {
-                StatCard("${favoriteIds.size}", "Favoris", modifier = Modifier.fillMaxWidth())
+                StatCard(
+                    "${favoriteIds.size}",
+                    "Favoris",
+                    modifier = Modifier.fillMaxWidth(0.33f)
+                )
             }
 
             Column(
