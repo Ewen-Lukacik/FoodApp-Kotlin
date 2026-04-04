@@ -56,7 +56,17 @@ class MainActivity : ComponentActivity() {
                         composable("search")    { SearchScreen(navController) }
                         composable("favorites") { FavoritesScreen(navController) }
                         composable("profile")   { ProfileScreen(navController) }
-                        composable("dish")      { DishScreen(navController) }
+                        composable(
+                            "dish/{recipeId}",
+                            arguments = listOf(
+                                androidx.navigation.navArgument("recipeId") {
+                                    type = androidx.navigation.NavType.IntType
+                                }
+                            )
+                        ) { backStackEntry ->
+                            val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
+                            DishScreen(navController, recipeId = recipeId)
+                        }
 
                         // Sous-pages
                         composable("edit_profile")    { EditProfileScreen(navController) }

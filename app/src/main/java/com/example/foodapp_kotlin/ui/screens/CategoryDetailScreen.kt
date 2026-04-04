@@ -96,7 +96,11 @@ fun CategoryDetailScreen(navController: NavController, categoryName: String = "I
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(List(10) { it }) {
-                    RecipeCard(recipe = dummyRecipe, modifier = Modifier.fillMaxWidth())
+                    RecipeCard(
+                        recipe = dummyRecipe,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { navController.navigate("dish/${dummyRecipe.id}") }
+                    )
                 }
             }
         }

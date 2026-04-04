@@ -62,7 +62,10 @@ fun FoodSection(
             .horizontalScroll(rememberScrollState())
     ) {
         recipes.forEach { recipe ->
-            RecipeCard(recipe = recipe)
+            RecipeCard(
+                recipe = recipe,
+                onClick = { navController.navigate("dish/${recipe.id}") }
+            )
         }
     }
 }
