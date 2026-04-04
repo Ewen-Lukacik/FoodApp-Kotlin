@@ -1,0 +1,254 @@
+package com.example.foodapp_kotlin.ui.screens
+
+import android.graphics.BitmapFactory
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.foodapp_kotlin.R
+import com.example.foodapp_kotlin.ui.theme.Background
+import com.example.foodapp_kotlin.ui.theme.DividerGray
+import com.example.foodapp_kotlin.ui.theme.Primary
+import com.example.foodapp_kotlin.ui.theme.TextPrimary
+import com.example.foodapp_kotlin.ui.viewmodel.AuthResult
+import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EditProfileScreen(navController: NavController, authViewModel: AuthViewModel) {
+    val user by authViewModel.currentUser.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    var prenom by remember(user) { mutableStateOf(user?.firstName ?: "") }
+    var nom by remember(user) { mutableStateOf(user?.lastName ?: "") }
+    var email by remember(user) { mutableStateOf(user?.email ?: "") }
+    var telephone by remember(user) { mutableStateOf(user?.phone ?: "") }
+    var selectedImagePath by remember(user) { mutableStateOf(user?.profileImage ?: "") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        uri?.let {
+            scope.launch(Dispatchers.IO) {
+                val dest = File(context.filesDir, "profile_${System.currentTimeMillis()}.jpg")
+                context.contentResolver.openInputStream(uri)?.use { input ->
+                    dest.outputStream().use { output -> input.copyTo(output) }
+                }
+                withContext(Dispatchers.Main) {
+                    selectedImagePath = dest.absolutePath
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(authViewModel) {
+        authViewModel.authResult.collect { result ->
+            when (result) {
+                is AuthResult.Success -> navController.popBackStack()
+                is AuthResult.Error -> errorMessage = result.message
+            }
+        }
+    }
+
+    val fieldColors = OutlinedTextFieldDefaults.colors(
+        unfocusedContainerColor = Color.White,
+        focusedContainerColor   = Color.White,
+        unfocusedBorderColor    = DividerGray,
+        focusedBorderColor      = Primary,
+        focusedLabelColor       = Primary
+    )
+    val fieldShape = RoundedCornerShape(14.dp)
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("Modifier le profil", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                            contentDescription = "Retour",
+                            tint = TextPrimary
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Background)
+            )
+        },
+        containerColor = Background
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Box(
+                contentAlignment = Alignment.BottomEnd,
+                modifier = Modifier.clickable {
+                    photoPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
+            ) {
+                val bitmap = remember(selectedImagePath) {
+                    if (selectedImagePath.isNotBlank()) BitmapFactory.decodeFile(selectedImagePath)?.asImageBitmap() else null
+                }
+                if (bitmap != null) {
+                    Image(
+                        bitmap = bitmap,
+                        contentDescription = "Photo de profil",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(96.dp)
+                            .clip(CircleShape)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_profile_placeholder),
+                        contentDescription = "Photo de profil",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(96.dp)
+                            .clip(CircleShape)
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(CircleShape)
+                        .background(Primary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("+", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+
+            Text(
+                "Changer la photo",
+                fontSize = 13.sp,
+                color = Primary,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                OutlinedTextField(
+                    value = prenom,
+                    onValueChange = { prenom = it },
+                    label = { Text("Prénom") },
+                    singleLine = true,
+                    modifier = Modifier.weight(1f),
+                    shape = fieldShape,
+                    colors = fieldColors
+                )
+                OutlinedTextField(
+                    value = nom,
+                    onValueChange = { nom = it },
+                    label = { Text("Nom") },
+                    singleLine = true,
+                    modifier = Modifier.weight(1f),
+                    shape = fieldShape,
+                    colors = fieldColors
+                )
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Adresse e-mail") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth(),
+                shape = fieldShape,
+                colors = fieldColors
+            )
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            OutlinedTextField(
+                value = telephone,
+                onValueChange = { telephone = it },
+                label = { Text("Téléphone") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                modifier = Modifier.fillMaxWidth(),
+                shape = fieldShape,
+                colors = fieldColors
+            )
+
+            if (errorMessage != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = errorMessage!!,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 13.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Button(
+                onClick = {
+                    if (prenom.isBlank() || nom.isBlank() || email.isBlank()) {
+                        errorMessage = "Veuillez remplir tous les champs obligatoires."
+                    } else {
+                        authViewModel.updateProfile(prenom, nom, email, telephone, selectedImagePath)
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+            ) {
+                Text("Enregistrer les modifications", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
