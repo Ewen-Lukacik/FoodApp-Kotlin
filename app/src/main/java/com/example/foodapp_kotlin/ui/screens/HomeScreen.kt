@@ -90,7 +90,7 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
                     ) {
                         Image(
                             painter = painterResource(id = imageResForName(context, featuredRecipe.image)),
-                            contentDescription = "Featured recipe",
+                            contentDescription = "Recette mise en avant",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
