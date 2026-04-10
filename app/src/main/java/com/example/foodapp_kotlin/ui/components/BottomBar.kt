@@ -8,6 +8,9 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
@@ -81,4 +84,10 @@ fun BottomBar(navController: NavController) {
             )
         }
     }
+}
+
+@Preview(showBackground = true, widthDp = 360, heightDp = 80)
+@Composable
+fun BottomBarPreview() {
+    BottomBar(navController = rememberNavController())
 }
