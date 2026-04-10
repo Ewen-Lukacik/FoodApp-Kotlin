@@ -25,7 +25,7 @@ L'idée c'était de faire une appli de recettes de cuisine, avec une interface p
 - **Material Design 3**
 - **Navigation Compose** pour les routes
 - Une seule Activity, tout le reste c'est des écrans Composable
-- Gradle 8 (KTS) + La version Catalog
+- Gradle 8 (KTS) + La versionnnnn Catalog
 - SDK min 24, cible 36
 
 ---
