@@ -41,7 +41,7 @@ fun TopBar(navController: NavController) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = "Tasty Recettes",
+                contentDescription = "Logo Tasty Recettes",
                 colorFilter = ColorFilter.tint(Primary),
                 modifier = Modifier
                     .height(36.dp)
