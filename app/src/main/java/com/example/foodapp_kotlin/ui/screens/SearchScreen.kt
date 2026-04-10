@@ -78,6 +78,7 @@ fun SearchScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
+
             Text(
                 "Catégories",
                 fontWeight = FontWeight.Bold,

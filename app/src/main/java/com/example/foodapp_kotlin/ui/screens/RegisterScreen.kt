@@ -31,6 +31,8 @@ import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
 
+
+
 @Composable
 fun RegisterScreen(navController: NavController) {
     var nom by remember { mutableStateOf("") }
