@@ -48,7 +48,7 @@ fun FavoritesScreen(navController: NavController, authViewModel: AuthViewModel) 
                 Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.Favorite,
