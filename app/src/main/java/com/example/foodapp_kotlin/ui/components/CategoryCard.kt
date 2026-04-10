@@ -37,7 +37,7 @@ fun CategoryCard(
     Card(
         modifier = modifier.padding(vertical = 4.dp).clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Primary.copy(alpha = 0.05f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
