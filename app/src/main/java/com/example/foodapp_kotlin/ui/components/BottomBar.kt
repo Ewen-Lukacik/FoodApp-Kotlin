@@ -32,6 +32,7 @@ private data class NavItem(
 )
 
 // Barre de navigation inférieure 
+
 @Composable
 fun BottomBar(navController: NavController) {
     val items = listOf(
