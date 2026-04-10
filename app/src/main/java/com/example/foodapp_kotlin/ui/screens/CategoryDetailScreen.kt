@@ -20,6 +20,8 @@ import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDetailScreen(navController: NavController, categoryName: String = "Italien") {

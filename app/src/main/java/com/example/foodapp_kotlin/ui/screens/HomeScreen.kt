@@ -35,6 +35,7 @@ fun HomeScreen(navController: NavController) {
                 .background(Background)
                 .fillMaxSize()
         ) {
+            
             item {
                 Column(modifier = Modifier.padding(horizontal = 20.dp)) {
                     Spacer(modifier = Modifier.height(8.dp))

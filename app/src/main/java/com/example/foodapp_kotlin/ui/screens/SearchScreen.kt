@@ -33,6 +33,7 @@ fun SearchScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
         ) {
+            
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(

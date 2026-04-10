@@ -34,6 +34,7 @@ import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
 
+
 @Composable
 fun ProfileScreen(navController: NavController) {
     MainScaffold(navController = navController) { innerPadding ->

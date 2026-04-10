@@ -33,6 +33,8 @@ import com.example.foodapp_kotlin.ui.theme.TextPrimary
 import com.example.foodapp_kotlin.ui.theme.TextSecondary
 import com.example.foodapp_kotlin.ui.theme.YellowStar
 
+
+
 @Composable
 fun DishScreen(navController: NavController) {
     MainScaffold(navController = navController) { innerPadding ->

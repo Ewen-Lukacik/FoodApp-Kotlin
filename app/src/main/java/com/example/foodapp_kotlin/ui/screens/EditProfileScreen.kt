@@ -29,6 +29,8 @@ import com.example.foodapp_kotlin.ui.theme.DividerGray
 import com.example.foodapp_kotlin.ui.theme.Primary
 import com.example.foodapp_kotlin.ui.theme.TextPrimary
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(navController: NavController) {
