@@ -31,6 +31,7 @@ private data class NavItem(
     val unselectedIcon: ImageVector
 )
 
+// Barre de navigation inférieure 
 @Composable
 fun BottomBar(navController: NavController) {
     val items = listOf(
