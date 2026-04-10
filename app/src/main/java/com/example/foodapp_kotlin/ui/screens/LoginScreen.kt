@@ -73,7 +73,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                "Bon retour !",
+                "Bienvenue !",
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
                 color = TextPrimary
