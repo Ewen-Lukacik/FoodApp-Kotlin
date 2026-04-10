@@ -3,7 +3,7 @@
 Projet Android réalisé dans le cadre d'un cours, par un groupe de 3 :
 **Imene Bentifraouine, Lyam Matic, Ewen Lukacik**
 
-L'idée c'était de faire une appli de recettes de cuisine, avec une interface propre en Jetpack Compose. On a essayé de rendre ça le plus complet possible côté UI même si la partie données est encore statique pour l'instant.
+L'idée c'était de faire une appli de recettes de cuisine, avec une interface propre en Jetpack Compose. On a essayé de rendre ça le plus complet possible côté UI même si la partie données est encore statique pour l'instant. Le code reste simple et facile à lire pour l'apprentissage.
 
 ---
 
