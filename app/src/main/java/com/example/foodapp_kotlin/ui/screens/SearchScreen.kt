@@ -73,7 +73,7 @@ fun SearchScreen(navController: NavController) {
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Rounded.Search,
-                            contentDescription = "Search",
+                            contentDescription = "Recherche",
                             tint = Primary
                         )
                     },
