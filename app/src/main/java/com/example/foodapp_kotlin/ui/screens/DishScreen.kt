@@ -3,11 +3,14 @@ package com.example.foodapp_kotlin.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
@@ -18,9 +21,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -31,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.room.util.TableInfo
+import com.example.foodapp_kotlin.local.entity.Comment
 import com.example.foodapp_kotlin.ui.viewmodel.AuthViewModel
 import com.example.foodapp_kotlin.ui.viewmodel.RecipeViewModel
 import com.example.foodapp_kotlin.ui.utils.imageResForName
@@ -51,9 +60,14 @@ fun DishScreen(navController: NavController, recipeId: Int, authViewModel: AuthV
     val categories by viewModel.recipeCategories.collectAsState()
     val favoriteIds by authViewModel.favoriteIds.collectAsState()
     val isFavorite = recipeId in favoriteIds
+    val currentUser by authViewModel.currentUser.collectAsState()
+    val comments by viewModel.comments.collectAsState()
+    var commentText by remember { mutableStateOf("") }
+
 
     LaunchedEffect(recipeId) {
         viewModel.loadRecipeDetail(recipeId)
+        viewModel.loadComments(recipeId)
     }
 
     val context = LocalContext.current
@@ -263,9 +277,105 @@ fun DishScreen(navController: NavController, recipeId: Int, authViewModel: AuthV
                                 fontWeight = FontWeight.Bold
                             )
                         }
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Text(
+                            text = "Commentaires (${comments.size})",
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        if(currentUser != null){
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                OutlinedTextField(
+                                    value = commentText,
+                                    onValueChange = { commentText = it },
+                                    placeholder = { Text("Ecrire un commentaire")},
+                                    maxLines = 3
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                IconButton(
+                                    onClick = {
+                                        viewModel.addComment(
+                                            recipeId = recipeId,
+                                            userId = currentUser!!.id,
+                                            authorName = "${currentUser!!.firstName} ${currentUser!!.lastName}",
+                                            content = commentText
+                                        )
+                                        commentText = ""
+                                    }
+                                ) {
+                                    Icon(
+                                        Icons.AutoMirrored.Filled.Send,
+                                        contentDescription = "Envoyer")
+                                }
+                            }
+                        } else {
+                            Text(
+                                text = "Conntecte toi pour laisser un commentaire",
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        if(comments.isEmpty()){
+                            Text(
+                                text = "Aucun commentaires",
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            )
+                        } else {
+                            comments.forEach { comment ->
+                                CommentItem(comment = comment)
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun CommentItem(comment: Comment) {
+    val date = remember(comment.createdAt){
+        val sdf = java.text.SimpleDateFormat("dd/mm/YY HH:mm", java.util.Locale.FRANCE)
+        sdf.format(java.util.Date(comment.createdAt))
+    }
+
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = comment.authorName,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = date,
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = comment.content,
+            )
         }
     }
 }
