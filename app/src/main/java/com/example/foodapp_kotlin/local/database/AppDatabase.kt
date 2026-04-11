@@ -15,9 +15,10 @@ import com.example.foodapp_kotlin.local.entity.*
         RecipeIngredientCrossRef::class,
         RecipeCategoryCrossRef::class,
         User::class,
-        UserFavorite::class
+        UserFavorite::class,
+        Comment::class
     ],
-    version = 5
+    version = 6
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -32,6 +33,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     // DAO for user
     abstract fun userDao(): UserDao
+
+    abstract fun commentDao(): CommentDao
 
     companion object {
         @Volatile private var INSTANCE: AppDatabase? = null

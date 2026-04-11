@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodapp_kotlin.local.database.AppDatabase
 import com.example.foodapp_kotlin.local.entity.Category
+import com.example.foodapp_kotlin.local.entity.Comment
 import com.example.foodapp_kotlin.local.entity.Ingredient
 import com.example.foodapp_kotlin.local.entity.Recipe
 import com.example.foodapp_kotlin.local.relation.CategoryWithRecipes
@@ -44,10 +45,36 @@ class RecipeViewModel(app: Application) : AndroidViewModel(app) {
     private val _recipeCategories = MutableStateFlow<List<Category>>(emptyList())
     val recipeCategories: StateFlow<List<Category>> = _recipeCategories.asStateFlow()
 
+    private val commentDao = db.commentDao()
+    private val _comments = MutableStateFlow<List<Comment>>(emptyList())
+    val comments: StateFlow<List<Comment>> = _comments.asStateFlow()
+
     init {
         viewModelScope.launch {
             _categoriesWithRecipes.value = db.categoryDao().getCategoriesWithRecipes()
             _categories.value = db.categoryDao().getAllCategories()
+        }
+    }
+
+    fun loadComments(recipeId: Int){
+        viewModelScope.launch {
+            commentDao.getCommentsForRecipe(recipeId).collect { list ->
+                _comments.value = list
+            }
+        }
+    }
+
+    fun addComment(recipeId: Int, userId: Int, authorName: String, content: String){
+        if(content.isBlank()) return
+        viewModelScope.launch {
+            commentDao.insertComment(
+                Comment(
+                    recipeId = recipeId,
+                    userId = userId,
+                    authorName = authorName,
+                    content = content
+                )
+            )
         }
     }
 
